@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TruSkin · S&OP Intelligence Platform</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F2EE;--bg2:#FFFFFF;--bg3:#F9F8F6;--bg4:#F0EDE8;
+  --border:#E4E0DA;--border2:#D4CFC8;
+  --text:#1A1714;--text2:#5C5650;--text3:#9C968E;
+  --brand:#E8751A;--brand2:#C45E0E;--brandlt:#FEF2E8;--brandbr:#F5CDA0;
+  --blue:#2878D4;--bluelt:#EEF4FD;--greens:#1A9E5E;--greenlt:#E8F7F0;
+  --red:#D43C3C;--redlt:#FDEEEE;--amber:#C47A18;--amberlt:#FEF7E8;
+  --purple:#7450D4;--purplelt:#F1EDFD;--teal:#0D9488;--teallt:#F0FDFA;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow2:0 2px 8px rgba(0,0,0,.08);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;display:flex;height:100vh;overflow:hidden;font-size:13px}
+/* NAV */
+#nav{width:52px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px;flex-shrink:0;z-index:50;box-shadow:var(--shadow)}
+.nl{width:34px;height:34px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff;margin-bottom:10px;flex-shrink:0}
+.ni{width:38px;height:38px;border-radius:7px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text3);transition:all .12s;position:relative;flex-shrink:0}
+.ni svg{width:16px;height:16px;stroke-width:1.8}
+.ni:hover{background:var(--bg4);color:var(--text2)}
+.ni.active{background:var(--brandlt);color:var(--brand)}
+.tip{position:absolute;left:48px;top:50%;transform:translateY(-50%);background:var(--text);color:#fff;padding:3px 9px;border-radius:5px;font-size:10.5px;white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .1s;z-index:999}
+.ni:hover .tip{opacity:1}
+/* MAIN */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+/* TOPBAR */
+#tb{height:46px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;box-shadow:var(--shadow)}
+#tb h1{font-size:13px;font-weight:600;color:var(--text);letter-spacing:-.1px}
+.tbsep{width:1px;height:18px;background:var(--border2)}
+.cbadge{padding:2px 9px;border-radius:20px;font-size:10.5px;font-weight:500}
+.cbrand{background:var(--brandlt);border:1px solid var(--brandbr);color:var(--brand)}
+.cwarn{background:var(--amberlt);border:1px solid #EAC06E;color:var(--amber)}
+.cgood{background:var(--greenlt);border:1px solid #8DD4B4;color:var(--greens)}
+/* CHIPS */
+.chips{display:flex;gap:3px}
+.chip{padding:4px 9px;border-radius:6px;border:1px solid var(--border2);background:transparent;color:var(--text3);cursor:pointer;font-size:10.5px;font-family:'Inter',sans-serif;transition:all .1s;white-space:nowrap}
+.chip:hover{border-color:var(--text3);color:var(--text2);background:var(--bg4)}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff;font-weight:500}
+/* CONTENT */
+.pg{flex:1;overflow-y:auto;padding:14px 16px;display:none}
+.pg.active{display:block}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.g12{display:grid;grid-template-columns:1fr 2fr;gap:10px}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+.g13{display:grid;grid-template-columns:1fr 3fr;gap:10px}
+.g31{display:grid;grid-template-columns:3fr 1fr;gap:10px}
+/* CARD */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px;box-shadow:var(--shadow)}
+.chd{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.ctitle{font-size:10.5px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px}
+.csub{font-size:10px;color:var(--text3)}
+/* KPI */
+.kpi{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:13px 14px}
+.kl{font-size:9.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.kv{font-size:20px;font-weight:700;line-height:1;letter-spacing:-.5px;color:var(--text)}
+.ks{font-size:10px;color:var(--text3);margin-top:3px}
+.ku{color:var(--greens)} .kd{color:var(--red)} .kw{color:var(--amber)}
+/* BANNER */
+.banner{border-radius:8px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:flex-start;gap:14px}
+.ban-warn{background:var(--amberlt);border:1px solid #EAC06E}
+.ban-blue{background:var(--bluelt);border:1px solid #A8C8EE}
+.ban-green{background:var(--greenlt);border:1px solid #8DD4B4}
+.ban-purple{background:var(--purplelt);border:1px solid #C0AFF5}
+.bi{font-size:16px;margin-top:1px;flex-shrink:0}
+.bt{font-size:11.5px;color:var(--text2);line-height:1.55;flex:1}
+.bt strong{color:var(--text)}
+.bv{font-size:20px;font-weight:700}
+/* TABLE */
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{padding:7px 10px;text-align:left;font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--border);white-space:nowrap;background:var(--bg3)}
+td{padding:7px 10px;border-bottom:1px solid var(--border);color:var(--text2);vertical-align:middle}
+tr:hover td{background:var(--bg4)}
+tr:last-child td{border-bottom:none}
+.nr{text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px}
+.nc{text-align:center}
+/* PILLS */
+.pill{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500}
+.p-ok{background:var(--greenlt);color:var(--greens)}
+.p-warn{background:var(--amberlt);color:var(--amber)}
+.p-err{background:var(--redlt);color:var(--red)}
+.p-info{background:var(--bluelt);color:var(--blue)}
+.p-pur{background:var(--purplelt);color:var(--purple)}
+.p-brand{background:var(--brandlt);color:var(--brand)}
+/* TAGS */
+.tag{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:600;letter-spacing:.2px;text-transform:uppercase}
+.t-hero{background:var(--brandlt);color:var(--brand);border:1px solid var(--brandbr)}
+.t-bs{background:var(--greenlt);color:var(--greens);border:1px solid #8DD4B4}
+.t-new{background:var(--purplelt);color:var(--purple);border:1px solid #C0AFF5}
+.t-sale{background:var(--redlt);color:var(--red);border:1px solid #F5B8B8}
+.t-seas{background:var(--bluelt);color:var(--blue);border:1px solid #A8C8EE}
+/* BAR ROWS */
+.br{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bl{font-size:11px;color:var(--text2);width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
+.bt2{flex:1;height:7px;background:var(--bg4);border-radius:4px;overflow:hidden}
+.bf{height:100%;border-radius:4px;transition:width .4s}
+.bv2{font-size:10.5px;font-family:'JetBrains Mono',monospace;color:var(--text3);width:50px;text-align:right;flex-shrink:0}
+/* CHART WRAP - explicit heights ensure charts render on hidden pages */
+.cw{position:relative}
+.cw canvas{width:100%!important}
+.h140{height:140px} .h160{height:160px} .h180{height:180px} .h200{height:200px} .h220{height:220px} .h240{height:240px} .h260{height:260px}
+/* INSIGHT */
+.insight{background:var(--bg3);border-left:3px solid var(--brand);border-radius:0 6px 6px 0;padding:9px 13px;font-size:11px;color:var(--text2);line-height:1.6;margin-bottom:6px}
+.insight strong{color:var(--text)}
+.in-bl{border-left-color:var(--blue)}
+.in-gr{border-left-color:var(--greens)}
+.in-rd{border-left-color:var(--red)}
+.in-pu{border-left-color:var(--purple)}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg3)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+/* SEC HDR */
+.sh{display:flex;align-items:center;gap:8px;margin:14px 0 8px}
+.sh h3{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;white-space:nowrap}
+.sh hr{flex:1;border:none;border-top:1px solid var(--border)}
+/* DL DROPDOWN */
+.dl-wrap{position:relative;display:inline-block}
+#dlbtn{padding:5px 12px;background:var(--brand);border:none;border-radius:6px;color:#fff;font-size:10.5px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;gap:5px}
+#dlbtn:hover{background:var(--brand2)}
+.dl-menu{display:none;position:absolute;right:0;top:110%;background:var(--bg2);border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow2);min-width:170px;z-index:200;overflow:hidden}
+.dl-menu.open{display:block}
+.dl-item{padding:8px 14px;font-size:11px;color:var(--text2);cursor:pointer;border-bottom:1px solid var(--border);transition:background .1s}
+.dl-item:last-child{border-bottom:none}
+.dl-item:hover{background:var(--bg4);color:var(--text)}
+/* CATEGORY EXPANDER */
+.cat-tree{margin-top:8px}
+.cat-row{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:6px;cursor:pointer;transition:background .1s;border:1px solid transparent}
+.cat-row:hover{background:var(--bg4);border-color:var(--border)}
+.cat-toggle{width:18px;height:18px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--bg4);color:var(--text3);flex-shrink:0;transition:all .15s}
+.cat-row.open .cat-toggle{background:var(--brandlt);color:var(--brand)}
+.cat-name{font-size:11px;font-weight:600;color:var(--text2);flex:1}
+.cat-pct{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--text3)}
+.cat-bar-outer{height:5px;background:var(--bg4);border-radius:3px;flex:1}
+.cat-bar-inner{height:100%;border-radius:3px;transition:width .3s}
+.cat-skus{display:none;margin-left:24px;margin-top:2px;margin-bottom:4px;border-left:2px solid var(--border);padding-left:10px}
+.cat-row.open + .cat-skus{display:block}
+.cat-sku-item{font-size:10.5px;color:var(--text3);padding:2px 0;display:flex;justify-content:space-between}
+.cat-sku-item:hover{color:var(--text2)}
+/* SCORE2 */
+.score2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.pos{color:var(--greens)} .neg{color:var(--red)} .warn{color:var(--amber)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="nav">
+<div class="nl">TS</div>
+<div class="ni active" onclick="sp('exec')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><span class="tip">Executive Summary</span></div>
+<div class="ni" onclick="sp('demand')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12"/></svg><span class="tip">Demand Planning</span></div>
+<div class="ni" onclick="sp('sop')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3m-3.3-7.7-2.1 2.1M7.4 16.6l-2.1 2.1m0-11.3 2.1 2.1m9.2 9.2 2.1 2.1"/></svg><span class="tip">S&OP Review</span></div>
+<div class="ni" onclick="sp('aop')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span class="tip">AOP vs Actual</span></div>
+<div class="ni" onclick="sp('trade')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="tip">Trade Finance</span></div>
+<div class="ni" onclick="sp('supply')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M1 3h15v13H1z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg><span class="tip">Supply Intelligence</span></div>
+<div class="ni" onclick="sp('nielsen')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21H3V3"/><path d="m6 15 4-4 4 4 4-6"/></svg><span class="tip">NielsenIQ Category</span></div>
+<div class="ni" onclick="sp('profitero')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg><span class="tip">Profitero+ Digital Shelf</span></div>
+<div class="ni" onclick="sp('skus')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg><span class="tip">SKU Master (38)</span></div>
+<div class="ni" onclick="sp('defs')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="tip">Definitions &amp; Formulas</span></div>
+</nav>
+
+<div id="main">
+<div id="tb">
+  <div class="nl" style="width:28px;height:28px;font-size:11px;border-radius:6px;flex-shrink:0">TS</div>
+  <div class="tbsep"></div>
+  <h1 id="ptitle">Executive Summary</h1>
+  <span class="cbadge cbrand">S&OP · Mar 2026</span>
+  <span class="cbadge cwarn" id="gap-badge">Gap: 5.8%</span>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+    <div class="chips" id="ret-chips">
+      <button class="chip on" onclick="setRet('all',this)">All</button>
+      <button class="chip" onclick="setRet('amz',this)">Amazon</button>
+      <button class="chip" onclick="setRet('wmt',this)">Walmart</button>
+      <button class="chip" onclick="setRet('tgt',this)">Target</button>
+      <button class="chip" onclick="setRet('wag',this)">Walgreens</button>
+      <button class="chip" onclick="setRet('cvs',this)">CVS</button>
+      <button class="chip" onclick="setRet('kro',this)">Kroger</button>
+      <button class="chip" onclick="setRet('dtc',this)">DTC</button>
+    </div>
+    <div class="tbsep"></div>
+    <div class="chips" id="per-chips">
+      <button class="chip on" onclick="setPer('12m',this)">12M</button>
+      <button class="chip" onclick="setPer('6m',this)">6M</button>
+      <button class="chip" onclick="setPer('fwd',this)">Forward</button>
+    </div>
+    <div class="dl-wrap">
+      <button id="dlbtn" onclick="toggleDlMenu()">Export ▾</button>
+      <div class="dl-menu" id="dl-menu">
+        <div class="dl-item" onclick="dlHTML()">HTML — Full interactive dashboard</div>
+        <div class="dl-item" onclick="dlCSV()">CSV — Demand data, all periods</div>
+        <div class="dl-item" onclick="dlExcel()">Excel — SKU + retailer tables</div>
+        <div class="dl-item" onclick="dlPBIX()">Power BI — Schema + DAX guide</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ████ DATA ENGINE ████ -->
+<script>
+// ── 38 SKUs: Singles + Bundles (sourced from truskin.com & Amazon) ────────────
+// [id, code, name, collection, category, msrp, volWt, badge, type, channels]
+// volWt = relative brand volume share (normalised below); type: S=Single, B=Bundle
+// channels: where sold — A=Amazon, W=Walmart, T=Target, G=Walgreens, C=CVS, K=Kroger, D=DTC
+const SKUS=[
+  // ── VITAMIN C SERUMS ──────────────────────────────────────────────────────
+  ["VCS1","TS-VCS-1OZ",  "Vitamin C Serum 1oz",               "Vitamin C","Serums",         21.99,280,"BEST SELLER","S","A,W,T,G,C,K,D"],
+  ["VCS2","TS-VCS-2OZ",  "Vitamin C Serum 2oz",               "Vitamin C","Serums",         26.99,115,"BEST SELLER","S","A,W,T,G,C,D"],
+  ["VCSS1","TS-VCSS-1OZ","Vitamin C Super Serum Plus 1oz",    "Vitamin C","Serums",         29.95, 45,null,          "S","A,W,T,D"],
+  ["VCSS2","TS-VCSS-2OZ","Vitamin C Super Serum Plus 2oz",    "Vitamin C","Serums",         49.99, 28,null,          "S","A,D"],
+  // ── HYALURONIC ACID SERUMS ───────────────────────────────────────────────
+  ["HAS1","TS-HAS-1OZ",  "Hyaluronic Acid Serum 1oz",         "Hyaluronic Acid","Serums",   18.99,110,"BEST SELLER","S","A,W,T,G,C,K,D"],
+  ["HAS2","TS-HAS-2OZ",  "Hyaluronic Acid Serum 2oz",         "Hyaluronic Acid","Serums",   28.99, 38,null,          "S","A,D"],
+  // ── RETINOL SERUMS ───────────────────────────────────────────────────────
+  ["RET1","TS-RET-1OZ",  "Retinol Serum 1oz",                 "Retinol","Serums",           22.99,118,"BEST SELLER","S","A,W,T,G,C,K,D"],
+  ["RET2","TS-RET-2OZ",  "Retinol Serum 2oz",                 "Retinol","Serums",           35.99, 30,null,          "S","A,D"],
+  // ── TEA TREE SERUMS ──────────────────────────────────────────────────────
+  ["TTS1","TS-TTS-1OZ",  "Tea Tree Serum 1oz",                "Tea Tree","Serums",          19.99, 58,null,          "S","A,W,T,G,C,D"],
+  ["TTS2","TS-TTS-2OZ",  "Tea Tree Serum 2oz",                "Tea Tree","Serums",          35.99, 15,null,          "S","A,D"],
+  // ── SPECIALTY SERUMS ─────────────────────────────────────────────────────
+  ["CAF1","TS-CAF-1OZ",  "Caffeine Facial Serum 1oz",         "Caffeine","Serums",          15.99, 28,"NEW",         "S","A,D"],
+  ["PEP1","TS-PEP-1OZ",  "Pro Collagen Peptide Serum 1oz",    "Peptide","Serums",           15.99, 18,"NEW",         "S","A,D"],
+  ["NIA1","TS-NIA-1OZ",  "Niacinamide B3 Serum 1oz",          "Niacinamide","Serums",       13.68, 20,null,          "S","A,W,D"],
+  ["BAK1","TS-BAK-1OZ",  "Bakuchiol Sensitive Serum 1oz",     "Retinol","Serums",           29.99,  8,null,          "S","A,D"],
+  ["MV11","TS-MV11-1OZ", "Multivitamin Skin Nutrition Serum 1oz","Vitamin C","Serums",      15.99, 10,null,          "S","A,D"],
+  // ── SUNSCREEN ────────────────────────────────────────────────────────────
+  ["SPF1","TS-SPF-1.7",  "SPF 30 Mineral Sunscreen Serum 1oz","Vitamin C","Sunscreens",    19.99, 28,"SEASONAL",    "S","A,W,T,D"],
+  // ── MOISTURIZERS ─────────────────────────────────────────────────────────
+  ["VCM1","TS-VCM-2OZ",  "Vitamin C Face Cream 2oz",          "Vitamin C","Moisturizers",  15.99, 50,null,          "S","A,W,T,G,C,D"],
+  ["VCM2","TS-VCM-4OZ",  "Vitamin C Face Cream 4oz",          "Vitamin C","Moisturizers",  19.99, 18,null,          "S","A,D"],
+  ["VCN1","TS-VCN-2OZ",  "Vitamin C Deep Hydration Night Cream 2oz","Vitamin C","Moisturizers",15.99,18,null,        "S","A,D"],
+  ["RCM1","TS-RCM-2OZ",  "Retinol Cream Moisturizer 2oz",     "Retinol","Moisturizers",    19.99, 18,null,          "S","A,W,D"],
+  // ── CLEANSERS ────────────────────────────────────────────────────────────
+  ["VCW1","TS-VCW-4OZ",  "Vitamin C Face Wash 4oz",           "Vitamin C","Cleansers",     13.19, 30,null,          "S","A,W,T,G,C,D"],
+  ["VCW2","TS-VCW-5OZ",  "Vitamin C Face Wash 5oz",           "Vitamin C","Cleansers",     15.99, 10,null,          "S","A,D"],
+  ["SCR1","TS-SCR-4OZ",  "Vitamin C Gentle Face Scrub 4oz",   "Vitamin C","Cleansers",     15.99,  9,null,          "S","A,D"],
+  // ── TONERS / EXFOLIANTS ──────────────────────────────────────────────────
+  ["TON1","TS-TON-4OZ",  "Daily Super Toner (Glycolic + Vit C) 4oz","Vitamin C","Toners",  15.99, 15,null,          "S","A,W,D"],
+  ["BHA1","TS-BHA-4.2",  "BHA Liquid Exfoliant & Toner 4.2oz","Exfoliants","Toners",       19.99, 14,"NEW",         "S","A,D"],
+  // ── EYE CARE ─────────────────────────────────────────────────────────────
+  ["ECC1","TS-ECC-0.5",  "Eye Cream with Vitamin C 0.5oz",    "Vitamin C","Eye Care",      15.95, 22,null,          "S","A,W,T,D"],
+  ["EYG1","TS-EYG-0.5",  "Eye Gel Peptide Complex 0.5oz",     "Peptide","Eye Care",        15.48, 14,null,          "S","A,W,D"],
+  ["HAE1","TS-HAE-0.5",  "Hyaluronic Acid Eye Cream 0.5oz",   "Hyaluronic Acid","Eye Care",15.95,  9,null,          "S","A,D"],
+  // ── MISTS ────────────────────────────────────────────────────────────────
+  ["RWM1","TS-RWM-4OZ",  "Rose Water Facial Mist 4oz",        "Hydration","Mists",         14.99,  8,null,          "S","A,D"],
+  // ── BUNDLES / KITS (sold as single unit containing multiple items) ────────
+  ["BDL-DUO","TS-DUO-1",    "Day/Night Duo — VCS1 + RET1 (1oz each)", "Vitamin C","Bundles & Kits",34.99,32,"SALE","B","A,D"],
+  ["BDL-TRIO","TS-TRIO-1",  "Face Serum Trio — VCS1+RET1+HAS1 (1oz each)","Vitamin C","Bundles & Kits",44.99,28,null,"B","A,D"],
+  ["BDL-3PK","TS-3PK-1",   "Age Defying 3-Pack — VCS1+RET1+HAS1",   "Vitamin C","Bundles & Kits",44.99,24,null,"B","A,D"],
+  ["BDL-4PK","TS-4PK-1",   "Age Defying 4-Pack — VCS1+RET1+HAS1+TTS1","Vitamin C","Bundles & Kits",55.93,12,null,"B","A,D"],
+  ["BDL-CDUO","TS-CDUO-1", "Super C Duo — VCSS+VCM1 (1oz+2oz)",    "Vitamin C","Bundles & Kits",35.99,14,null,"B","A,D"],
+  ["BDL-CESS","TS-CESS-1", "Daily Essentials Trio — VCS1+EYG1+VCM1","Vitamin C","Bundles & Kits",43.99,10,null,"B","A,D"],
+  ["BDL-STRT","TS-STRT-1", "Skin Tone Tune-Up 3-Step Kit",           "Vitamin C","Bundles & Kits",39.99, 8,null,"B","A,D"],
+  ["BDL-GRFT","TS-GRFT-1", "Anti-Aging Gift Set — 4-Piece",          "Vitamin C","Bundles & Kits",59.99, 6,"SEASONAL","B","A,D"],
+  ["BDL-EYE","TS-EYE-1",   "Eye Care Duo — ECC1+EYG1",               "Peptide","Bundles & Kits",  29.99, 5,null,"B","A,D"],
+];
+// Normalise volume weights
+const _wTot=SKUS.reduce((a,s)=>a+s[6],0);
+SKUS.forEach(s=>s[6]=s[6]/_wTot);
+
+const RETS={
+  amz:{n:"Amazon",     s:"AMZ",sh:.42,c:"#E8751A",tr:.050},
+  wmt:{n:"Walmart",    s:"WMT",sh:.21,c:"#2878D4",tr:.180},
+  tgt:{n:"Target",     s:"TGT",sh:.15,c:"#D43C3C",tr:.160},
+  wag:{n:"Walgreens",  s:"WAG",sh:.10,c:"#C47A18",tr:.140},
+  cvs:{n:"CVS",        s:"CVS",sh:.07,c:"#7450D4",tr:.150},
+  kro:{n:"Kroger",     s:"KRO",sh:.03,c:"#1A9E5E",tr:.170},
+  dtc:{n:"DTC",        s:"DTC",sh:.02,c:"#E8751A",tr:.020},
+};
+
+const ML=["Aug'25","Sep'25","Oct'25","Nov'25","Dec'25","Jan'26","Feb'26","Mar'26","Apr'26","May'26","Jun'26","Jul'26"];
+const IS_ACT=[1,1,1,1,1,1,1,0,0,0,0,0];
+const NI=7; // Mar'26
+
+// Brand-level monthly units. Annual ~3.42M units × $20.48 ASP ≈ $70M
+const BSF= [257400,276800,296200,388600,370200,243100,238800,314600,333200,355800,330400,302000];
+const BOP= [250400,269200,288600,381400,362800,237400,233600,296600,315200,337200,312800,286000];
+const BACT=[252800,272400,291600,384200,366800,240200,236400,   null,   null,   null,   null,   null];
+const BPRM=[     0,     0,  8200, 28400, 18600,     0,  1200, 12600, 18400, 24200, 14800,  6400];
+const BAOP=[268000,284000,306000,398000,382000,256000,252000,326000,344000,368000,344000,316000];
+
+const ASP=20.48;
+const GM_RET={amz:.62,wmt:.58,tgt:.59,wag:.60,cvs:.60,kro:.58,dtc:.72,all:.614};
+
+function rsh(rk,mi){
+  const b=RETS[rk].sh;
+  const adj={amz:[0,0,.01,.03,.03,0,0,0,0,.01,0,0],wmt:[0,0,0,-.01,-.01,0,0,0,0,0,0,0],
+             tgt:[0,0,.01,.01,.01,-.01,-.01,0,.01,.01,0,0],dtc:[0,.01,.01,0,0,.02,.02,0,0,0,0,0],
+             wag:[0,0,0,0,0,0,0,0,0,0,0,0],cvs:[0,0,0,0,0,0,0,0,0,0,0,0],kro:[0,0,0,0,0,0,0,0,0,0,0,0]};
+  return Math.max(0,b+(adj[rk]?adj[rk][mi]:0));
+}
+
+function gSF(rk,mi){return rk==='all'?BSF[mi]:Math.round(BSF[mi]*rsh(rk,mi));}
+function gOP(rk,mi){return rk==='all'?BOP[mi]:Math.round(BOP[mi]*rsh(rk,mi));}
+function gACT(rk,mi){
+  if(!IS_ACT[mi])return null;
+  if(rk==='all')return BACT[mi];
+  let a=Math.round(BACT[mi]*rsh(rk,mi));
+  if(rk==='wmt'&&mi>=5)a=Math.round(a*.955); // in-stock drag
+  return a;
+}
+function gAOP(rk,mi){return rk==='all'?BAOP[mi]:Math.round(BAOP[mi]*rsh(rk,mi));}
+function gPRM(rk,mi){return rk==='all'?BPRM[mi]:Math.round(BPRM[mi]*rsh(rk,mi));}
+
+let S={r:'all',p:'12m'};
+let currentPage='exec';
+
+function mIdxs(){
+  if(S.p==='12m')return[0,1,2,3,4,5,6,7,8,9,10,11];
+  if(S.p==='6m') return[3,4,5,6,7,8];
+  return[7,8,9,10,11]; // fwd
+}
+
+function compute(){
+  const ix=mIdxs(),r=S.r;
+  const months=ix.map(i=>ML[i]);
+  const sf=ix.map(i=>gSF(r,i));
+  const op=ix.map(i=>gOP(r,i));
+  const act=ix.map(i=>gACT(r,i));
+  const aop=ix.map(i=>gAOP(r,i));
+  const prm=ix.map(i=>gPRM(r,i));
+  const cons=ix.map(i=>Math.round(gSF(r,i)*.514+gOP(r,i)*.486));
+  const bull=ix.map(i=>Math.round(gSF(r,i)*1.15));
+  const bear=ix.map(i=>Math.round(gSF(r,i)*0.84));
+  const niI=ix.indexOf(NI);
+  const cSF=niI>=0?sf[niI]:gSF(r,NI);
+  const cOP=niI>=0?op[niI]:gOP(r,NI);
+  const cGap=cSF-cOP,cGapPct=cSF>0?cGap/cSF:0;
+  const trR=r==='all'?.128:(RETS[r]?.tr||.128);
+  const gm=GM_RET[r]||GM_RET.all;
+  // Revenue in $K
+  const grossSF=sf.map(u=>+(u*ASP/1000).toFixed(1));
+  const tradeSp=grossSF.map(g=>+(g*trR).toFixed(1));
+  const netSF=grossSF.map((g,i)=>+(g-tradeSp[i]).toFixed(1));
+  const gpSF=netSF.map(n=>+(n*gm).toFixed(1));
+  const grossAct=act.map(u=>u!=null?+(u*ASP/1000).toFixed(1):null);
+  const grossAOP=aop.map(u=>+(u*ASP/1000).toFixed(1));
+  return{months,sf,op,act,aop,prm,cons,bull,bear,ix,
+         cSF,cOP,cGap,cGapPct,trR,gm,
+         grossSF,tradeSp,netSF,gpSF,grossAct,grossAOP};
+}
+
+// ── Formatters ── ALL consistent: $M if >=1000K, else $K; units always K
+function fMon(vK){ // vK is in $K
+  if(vK==null)return'—';
+  const a=Math.abs(vK);
+  if(a>=1000)return(vK>=0?'':'−')+'$'+(Math.abs(vK)/1000).toFixed(2)+'M';
+  return(vK>=0?'':'−')+'$'+Math.abs(vK).toFixed(0)+'K';
+}
+function fMonShort(vK){
+  if(vK==null)return'—';
+  const a=Math.abs(vK);
+  if(a>=1000)return(vK>=0?'':'−')+'$'+(Math.abs(vK)/1000).toFixed(1)+'M';
+  return(vK>=0?'':'−')+'$'+Math.abs(vK).toFixed(0)+'K';
+}
+function fU(v){ // v raw units
+  if(v==null)return'—';
+  if(Math.abs(v)>=1e6)return(v/1e6).toFixed(2)+'M';
+  return(v/1000).toFixed(1)+'K';
+}
+function fUshort(v){
+  if(v==null)return'—';
+  return(v/1000).toFixed(0)+'K';
+}
+function fP(v){return v==null?'—':(v*100).toFixed(1)+'%';}
+function fPn(v){return v==null?'—':((v>=0?'+':'')+((v*100).toFixed(1))+'%');}
+
+// Chart helpers
+Chart.defaults.color='#9C968E';
+Chart.defaults.font.family="'Inter',sans-serif";
+Chart.defaults.font.size=10;
+const GR={color:'rgba(0,0,0,.05)',drawBorder:false};
+const TK={color:'#9C968E',maxRotation:0};
+let CH={};
+function mc(id,cfg){
+  if(CH[id])try{CH[id].destroy();}catch(e){}
+  const c=document.getElementById(id);
+  if(!c)return null;
+  cfg.options=cfg.options||{};
+  cfg.options.responsive=true;
+  cfg.options.maintainAspectRatio=false;
+  cfg.options.plugins=cfg.options.plugins||{};
+  cfg.options.plugins.legend=cfg.options.plugins.legend||{};
+  CH[id]=new Chart(c,cfg);
+  return CH[id];
+}
+
+// Filters
+function setRet(rk,el){
+  S.r=rk;
+  document.querySelectorAll('#ret-chips .chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  renderPage(currentPage);
+}
+function setPer(p,el){
+  S.p=p;
+  document.querySelectorAll('#per-chips .chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  renderPage(currentPage);
+}
+
+// Page nav
+const PT={exec:'Executive Summary',demand:'Demand Planning',sop:'S&OP Review',
+          aop:'AOP vs Actual',trade:'Trade Finance',supply:'Supply Intelligence',
+          nielsen:'NielsenIQ Category Intelligence',profitero:'Profitero+ Digital Shelf',
+          skus:'SKU Master — All 38 Products',defs:'Definitions & Formulas'};
+function sp(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById('pg-'+id); if(pg)pg.classList.add('active');
+  const ni=document.querySelector(`[onclick="sp('${id}')"]`); if(ni)ni.classList.add('active');
+  document.getElementById('ptitle').textContent=PT[id]||id;
+  currentPage=id;
+  renderPage(id);
+}
+function renderPage(id){
+  const D=compute();
+  // Update gap badge
+  document.getElementById('gap-badge').textContent='Gap: '+(D.cGapPct*100).toFixed(1)+'%';
+  if(id==='exec')    renderExec(D);
+  else if(id==='demand')  renderDemand(D);
+  else if(id==='sop')    renderSOP(D);
+  else if(id==='aop')    renderAOP(D);
+  else if(id==='trade')   renderTrade(D);
+  else if(id==='supply')  renderSupply();
+  else if(id==='nielsen') renderNielsen();
+  else if(id==='profitero')renderProfitero();
+  else if(id==='skus')    renderSKUs();
+  // defs page is pure static HTML — no render function needed
+}
+// ── DOWNLOAD FUNCTIONS ────────────────────────────────────────
+function toggleDlMenu(){
+  const m=document.getElementById('dl-menu');
+  m.classList.toggle('open');
+  document.addEventListener('click',function h(e){
+    if(!e.target.closest('.dl-wrap')){m.classList.remove('open');document.removeEventListener('click',h);}
+  },{once:false});
+}
+function dlHTML(){
+  document.getElementById('dl-menu').classList.remove('open');
+  const b=new Blob([document.documentElement.outerHTML],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='TruSkin-SOP-v6.html';a.click();
+}
+function dlCSV(){
+  document.getElementById('dl-menu').classList.remove('open');
+  const rows=[['Month','SF_Units','OP_Units','Actual_Units','AOP_Units','Promo_Units','SF_Revenue_K','Trade_K','Net_Revenue_K','GP_K']];
+  const D=compute();
+  D.months.forEach((m,i)=>{
+    rows.push([m,D.sf[i],D.op[i],D.act[i]??'',D.aop[i],D.prm[i],D.grossSF[i],D.tradeSp[i],D.netSF[i],D.gpSF[i]]);
+  });
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const b=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='TruSkin-Demand-Data.csv';a.click();
+}
+function dlExcel(){
+  document.getElementById('dl-menu').classList.remove('open');
+  // Build tab-separated data for Excel paste
+  const D=compute();
+  let out='TruSkin S&OP Demand Data — Exported '+new Date().toLocaleDateString()+'\n\n';
+  out+='DEMAND SUMMARY\n';
+  out+='Month\tSF Units\tOP Units\tActual Units\tAOP Units\tGross Rev $K\tTrade $K\tNet Rev $K\tGP $K\n';
+  D.months.forEach((m,i)=>{
+    out+=`${m}\t${D.sf[i]}\t${D.op[i]}\t${D.act[i]??''}\t${D.aop[i]}\t${D.grossSF[i]}\t${D.tradeSp[i]}\t${D.netSF[i]}\t${D.gpSF[i]}\n`;
+  });
+  out+='\nSKU MASTER\n';
+  out+='ID\tCode\tProduct\tCollection\tCategory\tType\tMSRP\tVol%\tEst Annual Units\tEst Annual Rev\tChannels\n';
+  const ann=BSF.reduce((a,v)=>a+v,0);
+  SKUS.forEach(s=>{
+    const eu=Math.round(ann*s[6]);
+    const er=(eu*s[5]);
+    out+=`${s[0]}\t${s[1]}\t${s[2]}\t${s[3]}\t${s[4]}\t${s[8]==='B'?'Bundle':'Single'}\t$${s[5].toFixed(2)}\t${(s[6]*100).toFixed(2)}%\t${eu}\t$${(er/1e6).toFixed(3)}M\t${s[9]}\n`;
+  });
+  const b=new Blob([out],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='TruSkin-SOP-Data.xls';a.click();
+}
+function dlPBIX(){
+  document.getElementById('dl-menu').classList.remove('open');
+  const guide=`TruSkin S&OP — Power BI Implementation Guide
+Generated: ${new Date().toLocaleDateString()}
+=====================================================
+
+NOTE: .pbix files require Power BI Desktop to create.
+This guide provides all schemas, DAX measures, and relationships
+to build the TruSkin S&OP report in Power BI Desktop.
+
+TABLES REQUIRED:
+1. dim_Calendar      — PeriodKey, Month, Quarter, FY, IsForecast
+2. dim_SKU           — SKUKey, Code, Name, Collection, Category, MSRP, Type
+3. dim_Retailer      — RetailerKey, Name, ShortName, TradeRate, GrossMargin
+4. fact_Demand       — PeriodKey, SKUKey, RetailerKey, SF_Units, OP_Units, Actual_Units, AOP_Units
+
+KEY DAX MEASURES:
+[SF Revenue $] = SUMX(fact_Demand, fact_Demand[SF_Units] * RELATED(dim_SKU[MSRP]))
+[OP Revenue $] = SUMX(fact_Demand, fact_Demand[OP_Units] * RELATED(dim_SKU[MSRP]))
+[Actual Revenue $] = SUMX(fact_Demand, fact_Demand[Actual_Units] * RELATED(dim_SKU[MSRP]))
+[MAPE SF%] = AVERAGEX(FILTER(fact_Demand, NOT(ISBLANK(fact_Demand[Actual_Units]))), ABS(fact_Demand[SF_Units]-fact_Demand[Actual_Units])/fact_Demand[Actual_Units])
+[SF vs OP Gap%] = DIVIDE([SF Revenue $]-[OP Revenue $], [SF Revenue $])
+[Trade Spend $] = SUMX(fact_Demand, [SF Revenue $] * RELATED(dim_Retailer[TradeRate]))
+[Net Revenue $] = [SF Revenue $] - [Trade Spend $]
+[Gross Profit $] = SUMX(VALUES(dim_Retailer[RetailerKey]), [Net Revenue $] * RELATED(dim_Retailer[GrossMargin]))
+[Units per Store per Week] = DIVIDE([SF Revenue $] / [Avg MSRP], [TDP Count] * 52)
+[Last 52W Sales $] = CALCULATE([Actual Revenue $], DATESINPERIOD(dim_Calendar[Date], MAX(dim_Calendar[Date]), -52, WEEK))
+
+RELATIONSHIPS:
+fact_Demand[PeriodKey]   → dim_Calendar[PeriodKey]   (Many-to-One)
+fact_Demand[SKUKey]      → dim_SKU[SKUKey]           (Many-to-One)
+fact_Demand[RetailerKey] → dim_Retailer[RetailerKey] (Many-to-One)
+
+PAGES TO BUILD (matching HTML dashboard):
+1. Executive Summary    — KPI cards, trend line, channel donut, retailer gap
+2. Demand Planning      — SF/OP/Actual/AOP combo, scenario bands, SKU matrix
+3. S&OP Review          — Team submissions, convergence, gap table
+4. AOP vs Actual        — YTD vs plan, variance bars, retailer breakdown
+5. Trade Finance        — Waterfall visual, trade rates, promo calendar
+6. Supply Intelligence  — Days of Supply, DC matrix
+7. NielsenIQ Category   — Category growth, competitive share, ACV trend
+8. Profitero Digital    — In-stock %, search rank, content scores
+9. SKU Master           — Full product list with filters
+10. Definitions         — DAX formula reference page
+`;
+  const b=new Blob([guide],{type:'text/plain'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='TruSkin-PowerBI-Setup-Guide.txt';a.click();
+}
+
+// ── CATEGORY HELPERS ──────────────────────────────────────────
+// Compute category vol% from SKUS array dynamically
+function getCategoryMix(){
+  const cats={};
+  SKUS.forEach(s=>{
+    const cat=s[4];
+    if(!cats[cat])cats[cat]={volWt:0,skus:[]};
+    cats[cat].volWt+=s[6];
+    cats[cat].skus.push(s);
+  });
+  // Sort by volWt desc
+  return Object.entries(cats).sort((a,b)=>b[1].volWt-a[1].volWt);
+}
+const CAT_COLORS=['#E8751A','#2878D4','#7450D4','#1A9E5E','#C47A18','#0D9488','#9D4EDD','#D43C3C'];
+
+function buildCategoryExpander(containerId,cSFunits){
+  const div=document.getElementById(containerId);
+  if(!div)return;
+  const mix=getCategoryMix();
+  const maxWt=mix[0][1].volWt;
+  div.innerHTML=mix.map((([cat,{volWt,skus}],ci)=>{
+    const catUnits=Math.round(cSFunits*volWt);
+    const barW=(volWt/maxWt*100).toFixed(0);
+    const col=CAT_COLORS[ci%CAT_COLORS.length];
+    const skuRows=skus.map(s=>{
+      const u=Math.round(cSFunits*s[6]);
+      return `<div class="cat-sku-item"><span>${s[2]}</span><span style="font-family:'JetBrains Mono',monospace">${fU(u)}</span></div>`;
+    }).join('');
+    return `
+      <div class="cat-row" onclick="toggleCat(this)">
+        <div class="cat-toggle">+</div>
+        <div style="width:8px;height:8px;border-radius:2px;background:${col};flex-shrink:0"></div>
+        <div class="cat-name">${cat}</div>
+        <div class="cat-bar-outer"><div class="cat-bar-inner" style="width:${barW}%;background:${col}55"></div></div>
+        <div class="cat-pct">${(volWt*100).toFixed(1)}%</div>
+      </div>
+      <div class="cat-skus">${skuRows}</div>`;
+  })).join('');
+}
+
+function toggleCat(row){
+  row.classList.toggle('open');
+  const t=row.querySelector('.cat-toggle');
+  if(t)t.textContent=row.classList.contains('open')?'−':'+';
+}
+
+</script>
+
+<!-- ████ EXECUTIVE SUMMARY ████ -->
+<div class="pg active" id="pg-exec">
+<div class="banner ban-warn">
+  <span class="bi">⚑</span>
+  <div class="bt"><strong>Mar'26 S&OP Gap Open.</strong> VCS1 L-Ascorbic Acid shortage (ETA Mar 22) · Retinol API 2-week delay · Walmart planogram 5 weeks late. Revenue at risk: ~<strong>$369K gross</strong>.</div>
+  <div style="text-align:right;flex-shrink:0"><div style="font-size:9px;color:var(--amber);margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px">Mar Gap</div><div class="bv" style="color:var(--amber)" id="ex-gap-v">—</div></div>
+</div>
+<div class="g5" style="margin-bottom:10px">
+  <div class="kpi"><div class="kl">Mar Sales Fcst</div><div class="kv" id="k-sf">—</div><div class="ks"><span class="kd">▾ 5.8% vs Ops Plan</span></div></div>
+  <div class="kpi"><div class="kl">Mar Ops Plan</div><div class="kv" id="k-op">—</div><div class="ks"><span class="kw">Gap 5.8%</span></div></div>
+  <div class="kpi"><div class="kl">Feb Actual</div><div class="kv" id="k-act">—</div><div class="ks"><span class="ku">▴ vs prior month</span></div></div>
+  <div class="kpi"><div class="kl">Mar Gross Revenue</div><div class="kv" id="k-rev">—</div><div class="ks"><span class="ku">▴ +31.4% YoY</span></div></div>
+  <div class="kpi"><div class="kl">Forecast MAPE (7mo)</div><div class="kv" style="color:var(--greens)">2.7%</div><div class="ks"><span class="ku">A-Grade accuracy</span></div></div>
+</div>
+<!-- FY26 Annual totals row -->
+<div class="g4" style="margin-bottom:10px">
+  <div class="kpi" style="border-left:3px solid var(--blue)">
+    <div class="kl">FY26 Sales Fcst — Units</div>
+    <div class="kv" id="k-fy-sf-u" style="color:var(--blue)">—</div>
+    <div class="ks" id="k-fy-sf-u-sub">Full year Aug'25–Jul'26 · from BSF</div>
+  </div>
+  <div class="kpi" style="border-left:3px solid var(--blue)">
+    <div class="kl">FY26 Sales Fcst — Revenue</div>
+    <div class="kv" id="k-fy-sf-r" style="color:var(--blue)">—</div>
+    <div class="ks" id="k-fy-sf-r-sub">at ASP $20.48</div>
+  </div>
+  <div class="kpi" style="border-left:3px solid var(--red)">
+    <div class="kl">FY26 Ops Plan — Units</div>
+    <div class="kv" id="k-fy-op-u" style="color:var(--red)">—</div>
+    <div class="ks" id="k-fy-op-u-sub">Full year Aug'25–Jul'26 · from BOP</div>
+  </div>
+  <div class="kpi" style="border-left:3px solid var(--red)">
+    <div class="kl">FY26 Ops Plan — Revenue</div>
+    <div class="kv" id="k-fy-op-r" style="color:var(--red)">—</div>
+    <div class="ks" id="k-fy-op-r-sub">at ASP $20.48</div>
+  </div>
+</div>
+<div class="g21" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">12-Month Demand Trend — Units</span><span class="csub" id="trend-sub">All Channels</span></div>
+    <div class="cw h220"><canvas id="ch-trend"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Channel Mix (Mar SF)</span></div>
+    <div class="cw h160" style="display:flex;align-items:center;justify-content:center"><canvas id="ch-donut"></canvas></div>
+    <div style="margin-top:8px" id="donut-leg"></div>
+  </div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Retailer Gap Analysis (Mar'26)</span><span class="csub">SF vs Ops Plan — click bar to filter</span></div>
+    <div class="cw h200"><canvas id="ch-retgap"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Category Revenue Mix (Annual SF)</span><span class="csub" style="font-size:9.5px;color:var(--text3)">Click + to expand SKUs</span></div>
+    <div class="cw h140"><canvas id="ch-coll"></canvas></div>
+    <div class="cat-tree" id="cat-tree-exec" style="margin-top:6px"></div>
+  </div>
+</div>
+<div class="g2">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Top 8 SKUs by Annual Volume</span></div>
+    <div id="sku-bars" style="padding-top:4px"></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Forecast Accuracy by Retailer (7-Month)</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th style="width:100px">Retailer</th><th class="nr" style="width:80px">MAPE SF%</th><th class="nr" style="width:80px">MAPE OP%</th><th class="nr" style="width:80px">Bias SF%</th><th class="nc" style="width:60px">Grade</th></tr></thead>
+        <tbody>
+          <tr><td>Amazon</td>     <td class="nr pos">1.8%</td><td class="nr pos">2.1%</td><td class="nr">+0.6%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>Walmart</td>    <td class="nr pos">3.4%</td><td class="nr pos">3.9%</td><td class="nr warn">+1.4%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>Target</td>     <td class="nr pos">2.6%</td><td class="nr pos">2.9%</td><td class="nr">+0.8%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>Walgreens</td>  <td class="nr pos">4.2%</td><td class="nr pos">4.8%</td><td class="nr">+1.1%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>CVS</td>        <td class="nr pos">3.8%</td><td class="nr pos">5.2%</td><td class="nr">+0.9%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>Kroger</td>     <td class="nr warn">6.4%</td><td class="nr warn">7.1%</td><td class="nr neg">−2.2%</td><td class="nc"><span class="pill p-warn">B</span></td></tr>
+          <tr><td>DTC</td>        <td class="nr pos">2.2%</td><td class="nr pos">2.6%</td><td class="nr">+0.4%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td style="font-weight:600;color:var(--text)">Brand Total</td><td class="nr pos" style="font-weight:600">2.7%</td><td class="nr pos" style="font-weight:600">3.1%</td><td class="nr" style="font-weight:600">+0.8%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ████ DEMAND PLANNING ████ -->
+<div class="pg" id="pg-demand">
+<div class="insight in-bl"><strong>Nielsen Integration into Demand SF:</strong> US Facial Serums growing +8.8% YoY (Q1'26). TruSkin 0.89 units/store/week vs category avg 0.71 (+25.4% above category). Forward SF incorporates +8.8% category uplift plus +22.6pp TruSkin-specific growth premium = +31.4% YoY forward demand basis. ACV gap (73.6% vs 100%) = $8.2M untapped distribution upside reflected in bull scenario.</div>
+<div class="g21" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Monthly Demand: SF · Ops Plan · Actuals · AOP</span></div>
+    <div class="cw h240"><canvas id="ch-dem-main"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Promotional Lift (Units)</span></div>
+    <div class="cw h160"><canvas id="ch-promo"></canvas></div>
+    <div class="insight" style="margin-top:8px;font-size:10.5px"><strong>Spring:</strong> Amazon Deal Mar 20–Apr 5 +34% · Walmart TPR Mar 15–Apr 12 +19% · Target Display Apr 1–28 +28% (pending)</div>
+  </div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Scenario Bands — Forward SF (Units)</span></div>
+    <div class="cw h200"><canvas id="ch-scenarios"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Category Mix (Mar SF — Units)</span><span class="csub" style="font-size:9.5px;color:var(--text3)">Click + to expand SKUs</span></div>
+    <div class="cw h140"><canvas id="ch-coll2"></canvas></div>
+    <div class="cat-tree" id="cat-tree-demand" style="margin-top:6px"></div>
+  </div>
+</div>
+<div class="card">
+  <div class="chd"><span class="ctitle">All SKUs × Retailer Demand Matrix (Mar'26 SF — Units)</span><span class="csub">All 38 SKUs · Filtered by retailer selection above</span></div>
+  <div class="tw" id="sku-ret-matrix"></div>
+</div>
+</div>
+
+<!-- ████ S&OP REVIEW ████ -->
+<div class="pg" id="pg-sop">
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Team Submissions vs Ops Plan (Mar'26)</span></div>
+    <div class="cw h200"><canvas id="ch-teams"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">S&OP Cycle Status — Mar 2026</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Step</th><th>Owner</th><th>Target</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>Data Refresh</td><td>IT/BI</td><td>Mar 8</td><td><span class="pill p-ok">Done</span></td></tr>
+          <tr><td>2</td><td>Statistical Baseline</td><td>Demand Planning</td><td>Mar 9</td><td><span class="pill p-ok">Done</span></td></tr>
+          <tr><td>3</td><td>Demand Team Review</td><td>Sales + Mktg</td><td>Mar 10</td><td><span class="pill p-ok">Done</span></td></tr>
+          <tr><td>4</td><td>Supply Review</td><td>Operations</td><td>Mar 11</td><td><span class="pill p-warn">In Progress</span></td></tr>
+          <tr><td>5</td><td>Pre-S&OP Meeting</td><td>Cross-Functional</td><td>Mar 13</td><td><span class="pill p-info">Pending</span></td></tr>
+          <tr><td>6</td><td>Executive Review</td><td>VP Sales + VP Ops</td><td>Mar 15</td><td><span class="pill p-info">Pending</span></td></tr>
+          <tr><td>7</td><td>Consensus Lock</td><td>All Teams</td><td>Mar 17</td><td><span class="pill p-info">Pending</span></td></tr>
+          <tr><td>8</td><td>Plan Communication</td><td>Demand Planning</td><td>Mar 18</td><td><span class="pill p-info">Pending</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Team Convergence — 3-Month Outlook (Units)</span></div>
+    <div class="cw h200"><canvas id="ch-conv"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Bias Analysis by Team (Mar'26)</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Team</th><th class="nr">Submission</th><th class="nr">vs Ops Plan</th><th class="nr">Bias%</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td><span style="color:var(--blue);font-weight:500">Sales / NAM</span></td><td class="nr" id="s-nam">—</td><td class="nr warn" id="sg-nam">—</td><td class="nr warn">+2.8%</td><td style="font-size:10px;color:var(--text3)">Optimistic; spring confirmed</td></tr>
+          <tr><td><span style="color:var(--red);font-weight:500">Operations</span></td><td class="nr" id="s-ops">—</td><td class="nr neg" id="sg-ops">—</td><td class="nr neg">−3.3%</td><td style="font-size:10px;color:var(--text3)">Constrained; VCS1 shortage</td></tr>
+          <tr><td><span style="color:var(--purple);font-weight:500">Finance</span></td><td class="nr" id="s-fin">—</td><td class="nr neg" id="sg-fin">—</td><td class="nr neg">−3.8%</td><td style="font-size:10px;color:var(--text3)">GM-gated; $1 price up Apr 1</td></tr>
+          <tr><td><span style="color:var(--greens);font-weight:500">Demand Planning</span></td><td class="nr" id="s-dp">—</td><td class="nr warn" id="sg-dp">—</td><td class="nr warn">−2.4%</td><td style="font-size:10px;color:var(--text3)">Statistical blend; ops ceiling</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight in-rd" style="margin-top:10px;font-size:10.5px"><strong>Key Escalation:</strong> VCS1 constraint −12,400 units vs SF. Alternate supplier ETA Mar 22. Decision: accept ops ceiling or expedite at +$0.42/unit?</div>
+  </div>
+</div>
+<div class="card">
+  <div class="chd"><span class="ctitle">All SKU Gap Detail (Mar'26)</span><span class="csub">All 38 SKUs · SF vs Ops Plan gap analysis</span></div>
+  <div class="tw" id="sku-gap-tbl" style="max-height:400px;overflow-y:auto"></div>
+</div>
+</div>
+
+<!-- ████ AOP VS ACTUAL ████ -->
+<div class="pg" id="pg-aop">
+<div class="banner ban-blue">
+  <span class="bi">📋</span>
+  <div class="bt"><strong>Annual Operating Plan (AOP) FY2026</strong> — Set pre-year at +18% YoY growth, incorporating Nielsen +7.2% category assumption and new item launch (CAF1, PEP1). YTD Aug–Feb shown vs actuals. March forward uses Sales Fcst vs AOP.</div>
+</div>
+<div class="g5" style="margin-bottom:10px">
+  <div class="kpi"><div class="kl">AOP Full Year (FY26)</div><div class="kv" id="aop-fy-plan">—</div><div class="ks">~3.48M units</div></div>
+  <div class="kpi"><div class="kl">YTD Actual (Aug–Feb)</div><div class="kv" id="aop-ytd-act">—</div><div class="ks" id="aop-ytd-vs">vs AOP</div></div>
+  <div class="kpi"><div class="kl">YTD vs AOP Gap</div><div class="kv" id="aop-ytd-gap">—</div><div class="ks" id="aop-ytd-pct">—</div></div>
+  <div class="kpi"><div class="kl">H2 Remaining SF (Mar–Jul)</div><div class="kv" id="aop-h2">—</div><div class="ks">5 months forward</div></div>
+  <div class="kpi"><div class="kl">Full Year Fcst vs AOP</div><div class="kv" id="aop-fy-gap">—</div><div class="ks" id="aop-fy-pct">—</div></div>
+</div>
+<div class="g21" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">AOP vs Actual vs Sales Forecast (Units)</span></div>
+    <div class="cw h240"><canvas id="ch-aop-main"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Monthly Variance vs AOP (%)</span></div>
+    <div class="cw h240"><canvas id="ch-aop-var"></canvas></div>
+  </div>
+</div>
+<div class="g2">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Retailer YTD (Aug–Feb): AOP vs Actual</span></div>
+    <div class="tw" id="aop-ret-tbl"></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">How Syndicated Data Improves AOP Accuracy</span></div>
+    <div class="insight in-bl" style="font-size:11px"><strong>What AOP got right vs wrong:</strong><br>Nov/Dec beat AOP +2.8% — Amazon flywheel stronger than modeled. Jan/Feb missed AOP −2.4% — post-holiday trough deeper than historical. Walmart trailing AOP −4.2% — in-stock drag (72.4%) not modelled pre-year.</div>
+    <div class="insight in-gr" style="font-size:11px;margin-top:6px"><strong>Nielsen for H2 AOP refinement:</strong> Q1'26 category confirmed +8.8% vs the +7.2% AOP assumption. TruSkin velocity premium (+25.4%) supports holding H2 AOP. Recommend: maintain AOP but flag Walmart as $148K at-risk.</div>
+    <div class="insight in-pu" style="font-size:11px;margin-top:6px"><strong>Profitero for next AOP cycle:</strong> VCS1 search rank #8→#3 correlates +18% organic velocity. Content scores below 85 at Walmart have −8% conversion penalty = AOP should build a content improvement milestone. Each +1pp ACV ≈ $48K/week incremental volume.</div>
+  </div>
+</div>
+</div>
+
+<!-- ████ TRADE FINANCE ████ -->
+<div class="pg" id="pg-trade">
+<div class="banner ban-purple">
+  <span class="bi">💰</span>
+  <div class="bt"><strong>Trade Finance — FY2026.</strong> Gross revenue less trade spend (slotting, TPR, display fees, co-op, scan-downs) = net revenue. Amazon blended trade rate: 5.0% (AMS model). Mass retail 16–18% (slotting/TPR). Trade ROI measured via Profitero price compliance, Nielsen velocity lift, and promo unit lift.</div>
+</div>
+<div class="g5" style="margin-bottom:10px">
+  <div class="kpi"><div class="kl">Gross Revenue (Mar SF)</div><div class="kv" id="tr-gross">—</div><div class="ks">at ASP $20.48/unit</div></div>
+  <div class="kpi"><div class="kl">Trade Spend (Mar)</div><div class="kv" id="tr-trade">—</div><div class="ks" id="tr-rate-lbl">Blended 12.8%</div></div>
+  <div class="kpi"><div class="kl">Net Revenue (Mar)</div><div class="kv" id="tr-net">—</div><div class="ks"><span class="ku">After trade deductions</span></div></div>
+  <div class="kpi"><div class="kl">Gross Profit (Mar)</div><div class="kv" id="tr-gm">—</div><div class="ks" id="tr-gm-pct">After COGS</div></div>
+  <div class="kpi"><div class="kl">Spring Promo ROI</div><div class="kv" style="color:var(--greens)">3.2×</div><div class="ks">Incr. units / trade $</div></div>
+</div>
+<div class="g21" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Gross vs Net Revenue vs Gross Profit by Month ($M)</span></div>
+    <div class="cw h240"><canvas id="ch-trade-rev"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Trade Rate by Retailer</span></div>
+    <div id="trade-bars" style="padding-top:6px"></div>
+    <div class="insight" style="margin-top:10px;font-size:10.5px"><strong>Note:</strong> Amazon's low rate (5.0%) vs mass retail (16–18%) reflects cost-per-click AMS model. DTC 2.0% is coupon/discount only — highest net margin channel.</div>
+  </div>
+</div>
+<div class="g2">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Trade Waterfall: Gross → Net → Gross Profit (Mar'26, $M)</span></div>
+    <div class="cw h220"><canvas id="ch-waterfall"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Promo Calendar & Trade Spend — Spring 2026</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Event</th><th>Retailer</th><th>Dates</th><th class="nr">Lift%</th><th class="nr">Incr Units</th><th class="nr">Trade</th><th class="nr">ROI</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td>Amazon Deal</td><td>Amazon</td><td>Mar 20–Apr 5</td><td class="nr pos">+34%</td><td class="nr">8,400</td><td class="nr">$210K</td><td class="nr pos">3.8×</td><td><span class="pill p-ok">Confirmed</span></td></tr>
+          <tr><td>Spring TPR</td><td>Walmart</td><td>Mar 15–Apr 12</td><td class="nr pos">+19%</td><td class="nr">5,800</td><td class="nr">$148K</td><td class="nr pos">3.1×</td><td><span class="pill p-ok">Confirmed</span></td></tr>
+          <tr><td>Beauty Display</td><td>Target</td><td>Apr 1–28</td><td class="nr pos">+28%</td><td class="nr">4,800</td><td class="nr">$92K</td><td class="nr warn">2.8×</td><td><span class="pill p-warn">Pending</span></td></tr>
+          <tr><td>Clip Strip Add</td><td>Walgreens</td><td>Apr 7–30</td><td class="nr pos">+11%</td><td class="nr">2,800</td><td class="nr">$28K</td><td class="nr pos">3.4×</td><td><span class="pill p-ok">Confirmed</span></td></tr>
+          <tr><td>Circular Feature</td><td>CVS</td><td>Mar 26–Apr 1</td><td class="nr pos">+16%</td><td class="nr">1,600</td><td class="nr">$44K</td><td class="nr warn">2.6×</td><td><span class="pill p-ok">Confirmed</span></td></tr>
+          <tr><td>New Item Setup</td><td>Kroger</td><td>Apr 14–Jun</td><td class="nr">+3 SKUs</td><td class="nr">600</td><td class="nr">$18K</td><td class="nr">—</td><td><span class="pill p-warn">Pending</span></td></tr>
+          <tr><td>Summer Prime</td><td>Amazon</td><td>May 15–21</td><td class="nr pos">+42%</td><td class="nr">12,600</td><td class="nr">$280K</td><td class="nr pos">4.2×</td><td><span class="pill p-info">Planned</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ████ SUPPLY INTELLIGENCE ████ -->
+<div class="pg" id="pg-supply">
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">DC Days of Supply — VCS1 (Mar 10, 2026)</span><span class="csub">Red &lt;8d · Amber 8–13d · Green ≥14d</span></div>
+    <div class="cw h220"><canvas id="ch-dos"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Active Supply Events</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Event</th><th>SKU</th><th>Type</th><th>Severity</th><th>ETA</th><th>Status</th><th>Impact</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--text);font-weight:500">L-Ascorbic Acid Shortage</td><td>VCS1</td><td>Raw Material</td><td><span class="pill p-err">HIGH</span></td><td>Mar 22</td><td><span class="pill p-warn">Open</span></td><td class="neg">−12,400 units Mar</td></tr>
+          <tr><td style="color:var(--text);font-weight:500">Retinol API Delay</td><td>RET1</td><td>API Delay</td><td><span class="pill p-warn">MED</span></td><td>Mar 14</td><td><span class="pill p-warn">Open</span></td><td class="warn">−4,200 units Mar</td></tr>
+          <tr><td style="color:var(--text);font-weight:500">Walmart Planogram Late</td><td>VCS1</td><td>Customer Op</td><td><span class="pill p-err">HIGH</span></td><td>Mar 1</td><td><span class="pill p-ok">Closed</span></td><td style="color:var(--text3)">−$148K impact</td></tr>
+          <tr><td style="color:var(--text);font-weight:500">Caffeine New Item Setup</td><td>CAF1</td><td>New Item</td><td><span class="pill p-info">LOW</span></td><td>Apr 14</td><td><span class="pill p-warn">Open</span></td><td style="color:var(--text3)">Kroger delayed</td></tr>
+          <tr><td style="color:var(--text);font-weight:500">SPF Zinc Oxide Tight</td><td>SPF1</td><td>Raw Material</td><td><span class="pill p-warn">MED</span></td><td>May 31</td><td><span class="pill p-warn">Open</span></td><td class="warn">Q2 &lt;10d safety stock</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chd"><span class="ctitle">DC Inventory Matrix — All DCs × Top 6 SKUs (Days of Supply)</span></div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>DC Location</th><th>Retailer</th><th class="nr">VCS1</th><th class="nr">VCSS</th><th class="nr">HAS1</th><th class="nr">RET1</th><th class="nr">TTS1</th><th class="nr">CAF1</th><th>Replen Status</th><th>Risk</th></tr></thead>
+      <tbody>
+        <tr><td>Walmart Rogers AR</td><td>Walmart</td><td class="nr neg">7d</td><td class="nr warn">11d</td><td class="nr pos">15d</td><td class="nr warn">10d</td><td class="nr pos">14d</td><td class="nr pos">18d</td><td><span class="pill p-err">URGENT</span></td><td><span class="pill p-err">HIGH</span></td></tr>
+        <tr><td>Walmart Bentonville AR</td><td>Walmart</td><td class="nr neg">6d</td><td class="nr warn">10d</td><td class="nr warn">13d</td><td class="nr warn">8d</td><td class="nr pos">14d</td><td class="nr pos">16d</td><td><span class="pill p-err">URGENT</span></td><td><span class="pill p-err">HIGH</span></td></tr>
+        <tr><td>Target Brooklyn Park MN</td><td>Target</td><td class="nr warn">11d</td><td class="nr warn">13d</td><td class="nr pos">16d</td><td class="nr pos">15d</td><td class="nr pos">17d</td><td class="nr pos">20d</td><td><span class="pill p-warn">Triggered</span></td><td><span class="pill p-warn">MED</span></td></tr>
+        <tr><td>Amazon ONT8 Fontana CA</td><td>Amazon</td><td class="nr pos">15d</td><td class="nr pos">17d</td><td class="nr pos">18d</td><td class="nr pos">16d</td><td class="nr pos">18d</td><td class="nr pos">22d</td><td><span class="pill p-ok">On Track</span></td><td><span class="pill p-ok">LOW</span></td></tr>
+        <tr><td>Amazon TEB9 Carteret NJ</td><td>Amazon</td><td class="nr pos">14d</td><td class="nr pos">16d</td><td class="nr pos">17d</td><td class="nr pos">15d</td><td class="nr pos">17d</td><td class="nr pos">21d</td><td><span class="pill p-ok">On Track</span></td><td><span class="pill p-ok">LOW</span></td></tr>
+        <tr><td>Walgreens Perrysburg OH</td><td>Walgreens</td><td class="nr pos">13d</td><td class="nr pos">14d</td><td class="nr pos">15d</td><td class="nr pos">14d</td><td class="nr pos">16d</td><td class="nr">—</td><td><span class="pill p-ok">On Track</span></td><td><span class="pill p-ok">LOW</span></td></tr>
+        <tr><td>CVS Woonsocket RI</td><td>CVS</td><td class="nr pos">16d</td><td class="nr pos">15d</td><td class="nr pos">16d</td><td class="nr pos">15d</td><td class="nr pos">14d</td><td class="nr">—</td><td><span class="pill p-ok">On Track</span></td><td><span class="pill p-ok">LOW</span></td></tr>
+        <tr><td>Kroger Cincinnati OH</td><td>Kroger</td><td class="nr warn">10d</td><td class="nr warn">11d</td><td class="nr warn">13d</td><td class="nr warn">11d</td><td class="nr warn">10d</td><td class="nr warn">12d</td><td><span class="pill p-warn">Pending</span></td><td><span class="pill p-warn">MED</span></td></tr>
+        <tr><td>TruSkin 3PL Reno NV</td><td>DTC</td><td class="nr pos">18d</td><td class="nr pos">19d</td><td class="nr pos">20d</td><td class="nr pos">18d</td><td class="nr pos">17d</td><td class="nr pos">24d</td><td><span class="pill p-ok">On Track</span></td><td><span class="pill p-ok">LOW</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ████ NIELSENIQ ████ -->
+<div class="pg" id="pg-nielsen">
+<div class="banner ban-blue">
+  <span class="bi">📊</span>
+  <div class="bt"><strong>NielsenIQ US Food/Drug/Mass — Facial Serums & Treatments · Simulated syndicated data for S&OP illustration.</strong> Planning linkage: (1) Category growth index applied to forward SF. (2) Velocity vs category avg sets sell-through confidence. (3) ACV gap drives distribution expansion targets in AOP. (4) Competitive share shifts trigger scenario stress tests.</div>
+</div>
+<div class="g5" style="margin-bottom:10px">
+  <div class="kpi"><div class="kl">US Category (Q1'26)</div><div class="kv" style="color:var(--blue)">$636.8M</div><div class="ks"><span class="ku">▴ +8.8% YoY</span></div></div>
+  <div class="kpi"><div class="kl">TruSkin Dollar Share</div><div class="kv" style="color:var(--brand)">4.1%</div><div class="ks"><span class="ku">▴ +0.7pp vs Q2'25</span></div></div>
+  <div class="kpi"><div class="kl">TruSkin ACV</div><div class="kv">73.6%</div><div class="ks"><span class="ku">▴ +1.4pp/qtr</span></div></div>
+  <div class="kpi"><div class="kl">Units/Store/Week (TruSkin)</div><div class="kv" style="color:var(--greens)">0.89</div><div class="ks">Cat avg 0.71 <span class="ku">(+25.4%)</span></div></div>
+  <div class="kpi"><div class="kl">TruSkin Growth YoY</div><div class="kv" style="color:var(--greens)">+31.4%</div><div class="ks">vs category +8.8%</div></div>
+</div>
+<!-- Nielsen Scorecards -->
+<div class="score2" style="margin-bottom:10px">
+  <div class="card" style="display:flex;align-items:flex-start;gap:16px;padding:14px 18px">
+    <div style="flex:1">
+      <div style="font-size:9.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Last 52 Weeks Sales — TruSkin (Nielsen)</div>
+      <div style="font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.5px">$62.4M</div>
+      <div style="font-size:10.5px;color:var(--text3);margin-top:4px">FDM + Amazon panel · through week ending Mar 1, 2026 · <span class="ku">+25.1% vs prior 52 weeks</span></div>
+      <div style="display:flex;gap:16px;margin-top:8px">
+        <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">Units (est.)</div><div style="font-size:13px;font-weight:600;color:var(--text)">2.91M</div></div>
+        <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">Avg Price</div><div style="font-size:13px;font-weight:600;color:var(--text)">$21.44</div></div>
+        <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">ACV%</div><div style="font-size:13px;font-weight:600;color:var(--text)">73.6%</div></div>
+        <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">Units/Store/Wk</div><div style="font-size:13px;font-weight:600;color:var(--greens)">0.89</div></div>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--text3);border-top:1px solid var(--border);padding-top:6px">⚠ Excludes DTC channel (~2% of brand). Amazon via panel est. ±5% variance. Brand sell-in total Aug–Feb: $41.9M.</div>
+    </div>
+  </div>
+  <div class="card" style="display:flex;align-items:flex-start;gap:16px;padding:14px 18px">
+    <div style="flex:1">
+      <div style="font-size:9.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Aug'25 — Week Ending Mar 1, 2026 (Nielsen lag)</div>
+      <div style="font-size:26px;font-weight:700;color:var(--text);letter-spacing:-.5px">$38.6M</div>
+      <div style="font-size:10.5px;color:var(--text3);margin-top:4px">30.4 selling weeks · <span class="ku">+29.4% vs same period prior year</span></div>
+      <div style="display:flex;gap:16px;margin-top:8px">
+        <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">Units (est.)</div><div style="font-size:13px;font-weight:600;color:var(--text)">1.88M</div></div>
+        <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">Avg Wk Sales</div><div style="font-size:13px;font-weight:600;color:var(--text)">$1.27M</div></div>
+        <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">Peak Wk</div><div style="font-size:13px;font-weight:600;color:var(--brand)">$2.36M</div></div>
+        <div><div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.4px">vs AOP (Nielsen)</div><div style="font-size:13px;font-weight:600;color:var(--amber)">−8.2%</div></div>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--text3);border-top:1px solid var(--border);padding-top:6px">Note: Nielsen −8.2% vs brand −4.7% AOP gap (AOP page). Delta = DTC exclusion + Amazon panel undercount + sell-through vs sell-in timing.</div>
+    </div>
+  </div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">TruSkin Sales ($M) & Growth vs Category Growth (%)</span><span class="csub">Bars = TruSkin $M · Lines = YoY growth%</span></div>
+    <div class="cw h220"><canvas id="ch-nq-trend"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Competitive Dollar Share (Q1'26)</span><span class="csub">Click bar to see trend</span></div>
+    <div class="cw h220"><canvas id="ch-comp-share"></canvas></div>
+    <div id="share-trend"></div>
+  </div>
+</div>
+<div class="card" style="margin-bottom:10px">
+  <div class="chd"><span class="ctitle">Competitive Benchmarking Table</span></div>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Brand</th><th class="nr">Q2'25 Share</th><th class="nr">Q3'25 Share</th><th class="nr">Q4'25 Share</th><th class="nr">Q1'26 Share</th><th class="nr">YoY Growth%</th><th class="nr">ACV%</th><th class="nr">Units/Store/Wk</th><th>Trend</th></tr></thead>
+      <tbody>
+        <tr><td style="font-weight:700;color:var(--text)">TruSkin ★</td><td class="nr">3.4%</td><td class="nr">3.6%</td><td class="nr">3.9%</td><td class="nr pos">4.1%</td><td class="nr pos">+31.4%</td><td class="nr">73.6%</td><td class="nr pos">0.89</td><td><span class="pill p-ok">Gaining Fast</span></td></tr>
+        <tr><td>CeraVe</td><td class="nr">10.4%</td><td class="nr">10.8%</td><td class="nr">11.2%</td><td class="nr">11.6%</td><td class="nr pos">+18.8%</td><td class="nr">92.2%</td><td class="nr">1.48</td><td><span class="pill p-ok">Gaining</span></td></tr>
+        <tr><td>Neutrogena</td><td class="nr">8.8%</td><td class="nr">8.6%</td><td class="nr">8.4%</td><td class="nr warn">8.2%</td><td class="nr warn">+1.4%</td><td class="nr">95.4%</td><td class="nr">0.95</td><td><span class="pill p-warn">Declining</span></td></tr>
+        <tr><td>Paula's Choice</td><td class="nr">4.4%</td><td class="nr">4.6%</td><td class="nr">4.8%</td><td class="nr pos">5.0%</td><td class="nr pos">+14.2%</td><td class="nr">45.2%</td><td class="nr">1.06</td><td><span class="pill p-ok">Gaining</span></td></tr>
+        <tr><td>The Ordinary</td><td class="nr">7.2%</td><td class="nr">7.0%</td><td class="nr">6.8%</td><td class="nr warn">6.6%</td><td class="nr warn">−1.6%</td><td class="nr">61.2%</td><td class="nr warn">0.83</td><td><span class="pill p-warn">Declining</span></td></tr>
+        <tr><td>Inkey List</td><td class="nr">2.2%</td><td class="nr">2.4%</td><td class="nr">2.6%</td><td class="nr pos">2.8%</td><td class="nr pos">+22.2%</td><td class="nr">45.6%</td><td class="nr">0.69</td><td><span class="pill p-ok">Gaining</span></td></tr>
+        <tr><td>Private Label</td><td class="nr">7.2%</td><td class="nr">7.4%</td><td class="nr">7.2%</td><td class="nr">7.0%</td><td class="nr">+2.6%</td><td class="nr">69.4%</td><td class="nr">0.61</td><td><span class="pill p-info">Stable</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="g2">
+  <div class="card">
+    <div class="chd"><span class="ctitle">TruSkin ACV% & Dollar Share% Trend</span></div>
+    <div class="cw h200"><canvas id="ch-acv"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">How Nielsen Drives S&OP Planning</span></div>
+    <div class="insight in-bl" style="font-size:11px"><strong>1. Category Growth → Forward SF Uplift:</strong> +8.8% YoY applied to statistical baseline. Without this, SF understates market tailwind by ~$580K/month.</div>
+    <div class="insight in-gr" style="font-size:11px;margin-top:6px"><strong>2. Units/Store/Week → Sell-Through Confidence:</strong> TruSkin 0.89 units vs category avg 0.71 (+25.4%) means TruSkin turns 25% faster per store. Ops Plan can be more aggressive on replenishment recommendations. VCS1 at 1.24 units/store/week is the brand's best performer vs any competitive SKU in its tier.</div>
+    <div class="insight in-pu" style="font-size:11px;margin-top:6px"><strong>3. ACV Gap → Retail Expansion Plan:</strong> 73.6% ACV vs 90–95% leaders. Each +1pp ACV ≈ 188 new store TDPs × 0.89 units/store/wk × 52 weeks = ~8,700 incremental units/year ≈ $177K at ASP. Informs AOP new-item distribution targets for Kroger and DTC expansion.</div>
+    <div class="insight in-rd" style="font-size:11px;margin-top:6px"><strong>4. Share Shifts → Scenario Stress Tests:</strong> If CeraVe gains 1pp share (likely at +18.8% growth), TruSkin bear scenario assumes velocity index −3%. Applied in bear SF multiplier (×0.84).</div>
+  </div>
+</div>
+</div>
+
+<!-- ████ PROFITERO ████ -->
+<div class="pg" id="pg-profitero">
+<div class="banner ban-purple">
+  <span class="bi">🖥</span>
+  <div class="bt"><strong>Profitero+ Digital Shelf — Mar 10, 2026.</strong> Planning linkage: (1) In-stock rate modulates demand actuals — Walmart 72.4% = 27.6% sales lost, adjusting both actuals and forward SF downward until resolved. (2) Search rank improvement drives organic velocity, raising Amazon SF. (3) Price violations trigger trade finance alerts. (4) Content score below 85 = −8% conversion, factored into velocity model.</div>
+</div>
+<div class="g5" style="margin-bottom:10px">
+  <div class="kpi"><div class="kl">Avg Brand In-Stock %</div><div class="kv" style="color:var(--amber)">91.4%</div><div class="ks"><span class="kw">Walmart dragging avg</span></div></div>
+  <div class="kpi"><div class="kl">VCS1 Amazon Search Rank</div><div class="kv" style="color:var(--greens)">#3</div><div class="ks"><span class="ku">▴ from #8 (Aug'25)</span></div></div>
+  <div class="kpi"><div class="kl">Avg Price Compliance</div><div class="kv">97.2%</div><div class="ks"><span class="kw">Walmart 94.8–97.2%</span></div></div>
+  <div class="kpi"><div class="kl">Avg Content Score (Amz)</div><div class="kv">85/100</div><div class="ks"><span class="ku">VCS1: 92 — best</span></div></div>
+  <div class="kpi"><div class="kl">VCS1 Buy Box Rate</div><div class="kv" style="color:var(--greens)">99.2%</div><div class="ks">3P seller share 0.8%</div></div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div class="chd"><span class="ctitle">In-Stock Rate by Retailer × SKU (Current %)</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>SKU</th><th class="nr">Amazon</th><th class="nr">Walmart</th><th class="nr">Target</th><th class="nr">Walgreens</th><th class="nr">CVS</th><th>Demand Impact</th></tr></thead>
+        <tbody>
+          <tr><td><span style="font-weight:600">VCS1</span> <span class="tag t-hero">HERO</span></td><td class="nr pos">94.2%</td><td class="nr neg">72.4%</td><td class="nr warn">88.6%</td><td class="nr pos">96.4%</td><td class="nr pos">97.8%</td><td class="neg">−5,840 units/mo Walmart</td></tr>
+          <tr><td><span style="font-weight:600">HAS1</span> <span class="tag t-bs">BEST</span></td><td class="nr pos">99.1%</td><td class="nr warn">88.6%</td><td class="nr pos">94.2%</td><td class="nr pos">98.8%</td><td class="nr pos">99.2%</td><td class="warn">−1,240 units/mo Walmart</td></tr>
+          <tr><td>RET1</td><td class="nr pos">98.8%</td><td class="nr warn">89.4%</td><td class="nr pos">91.8%</td><td class="nr pos">98.4%</td><td class="nr pos">99.0%</td><td class="warn">−880 units WMT/TGT</td></tr>
+          <tr><td>VCSS</td><td class="nr pos">97.4%</td><td class="nr warn">84.2%</td><td class="nr pos">91.8%</td><td class="nr pos">97.2%</td><td class="nr pos">98.4%</td><td class="warn">−580 units Walmart</td></tr>
+          <tr><td>TTS1</td><td class="nr pos">98.8%</td><td class="nr pos">91.2%</td><td class="nr pos">96.4%</td><td class="nr pos">98.6%</td><td class="nr pos">99.4%</td><td class="pos">Minimal</td></tr>
+          <tr><td>CAF1 <span class="tag t-new">NEW</span></td><td class="nr warn">82.4%</td><td class="nr">—</td><td class="nr">—</td><td class="nr">—</td><td class="nr">—</td><td class="warn">New item; stocking</td></tr>
+          <tr><td>SPF1 <span class="tag t-seas">SEASONAL</span></td><td class="nr pos">96.8%</td><td class="nr warn">84.2%</td><td class="nr warn">90.4%</td><td class="nr">—</td><td class="nr">—</td><td class="warn">Q2 zinc oxide risk</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">How Profitero Adjusts S&OP Plans</span></div>
+    <div class="insight in-rd" style="font-size:11px"><strong>Walmart VCS1 (72.4% in-stock):</strong> SF is 8,200 units/month. At 100% fill rate, captured demand would be 11,300 units — the true demand signal is 55% higher than what's being sold. Forward SF for Walmart is demand-constrained, not demand-limited.</div>
+    <div class="insight in-bl" style="font-size:11px;margin-top:6px"><strong>Search Rank #8 → #3:</strong> Each 1-rank improvement for positions 1–10 = +3.8% organic velocity. Net uplift: +19.4%. Applied in Amazon forward SF (+18.2% above seasonal baseline).</div>
+    <div class="insight in-pu" style="font-size:11px;margin-top:6px"><strong>Content Score 78 (CAF1):</strong> Operating at 94.6% of velocity potential. Content roadmap: 3 image additions + A+ approval = +6% velocity = +420 units/month on Amazon.</div>
+    <div class="insight in-gr" style="font-size:11px;margin-top:6px"><strong>Price Compliance (Walmart 97.2%):</strong> −$0.51/unit below MSRP = $28K/month MAP erosion. Profitero alert → Trade Finance: reduce Walmart net revenue assumption by $28K/month pending resolution.</div>
+  </div>
+</div>
+<div class="g2">
+  <div class="card">
+    <div class="chd"><span class="ctitle">Amazon Search Rank Trend — "vitamin c serum face"</span><span class="csub">Lower = Better · Y-axis inverted</span></div>
+    <div class="cw h200"><canvas id="ch-rank"></canvas></div>
+  </div>
+  <div class="card">
+    <div class="chd"><span class="ctitle">Reviews & Ratings (Amazon)</span></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>SKU</th><th class="nr">Reviews</th><th class="nr">Rating</th><th class="nr">Positive%</th><th class="nr">Buy Box%</th><th class="nc">Grade</th></tr></thead>
+        <tbody>
+          <tr><td>VCS1 <span class="tag t-hero">HERO</span></td><td class="nr">48,240</td><td class="nr pos">4.4★</td><td class="nr pos">92%</td><td class="nr pos">99.2%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>HAS1 <span class="tag t-bs">BEST</span></td><td class="nr">22,180</td><td class="nr pos">4.5★</td><td class="nr pos">94%</td><td class="nr pos">99.2%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>RET1 <span class="tag t-bs">BEST</span></td><td class="nr">18,640</td><td class="nr">4.2★</td><td class="nr pos">88%</td><td class="nr pos">98.4%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>VCSS</td><td class="nr">12,840</td><td class="nr pos">4.4★</td><td class="nr pos">91%</td><td class="nr pos">97.2%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>TTS1</td><td class="nr">14,820</td><td class="nr">4.3★</td><td class="nr pos">89%</td><td class="nr pos">96.8%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+          <tr><td>CAF1 <span class="tag t-new">NEW</span></td><td class="nr">820</td><td class="nr">4.1★</td><td class="nr">86%</td><td class="nr pos">92.4%</td><td class="nc"><span class="pill p-warn">B</span></td></tr>
+          <tr><td>PEP1 <span class="tag t-new">NEW</span></td><td class="nr">148</td><td class="nr warn">3.9★</td><td class="nr warn">82%</td><td class="nr">90.2%</td><td class="nc"><span class="pill p-warn">B</span></td></tr>
+          <tr><td>VCS2</td><td class="nr">8,420</td><td class="nr">4.3★</td><td class="nr pos">90%</td><td class="nr pos">98.8%</td><td class="nc"><span class="pill p-ok">A</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ████ SKU MASTER ████ -->
+<div class="pg" id="pg-skus">
+<div class="banner ban-blue">
+  <span class="bi">📦</span>
+  <div class="bt"><strong>TruSkin Complete SKU Catalog — 38 Products (29 Singles + 9 Bundles/Kits).</strong>
+  Sourced from truskin.com and Amazon storefront. Categories: Serums (15 singles) · Moisturizers (4) · Cleansers (3) · Toners/Exfoliants (2) · Eye Care (3) · Sunscreen (1) · Mist (1) · Bundles &amp; Kits (9). Volume weights calibrated to ~$70M annual brand revenue.</div>
+</div>
+<div class="card">
+  <div class="tw">
+    <table>
+      <thead><tr><th>Key</th><th>Code</th><th>Product Name</th><th>Collection</th><th>Category</th><th>Type</th><th class="nr">MSRP</th><th class="nr">Brand Vol%</th><th class="nr">Est. Ann. Units</th><th class="nr">Est. Ann. Rev</th><th>Channels</th><th>Label</th></tr></thead>
+      <tbody id="sku-master-rows"></tbody>
+    </table>
+  </div>
+</div>
+</div>
+
+<!-- ████ DEFINITIONS & FORMULAS ████ -->
+<div class="pg" id="pg-defs">
+<div class="banner ban-blue">
+  <span class="bi">📖</span>
+  <div class="bt"><strong>Definitions, Formulas &amp; KPI Glossary.</strong> Every metric shown in this dashboard — with precise calculation methodology, worked examples using TruSkin Mar'26 data, and guidance on interpreting each number in the context of S&amp;OP decision-making.</div>
+</div>
+
+<!-- SECTION: Demand Planning -->
+<div style="display:flex;align-items:center;gap:10px;margin:14px 0 8px">
+  <span style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap">Demand Planning KPIs</span>
+  <div style="flex:1;border-top:1px solid var(--border)"></div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:4px">Demand</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Sales Forecast (SF)</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Bottom-up unconstrained demand estimate. Reflects what the market will consume regardless of supply availability. Generated by the Sales/NAM team from POS data, promotions confirmed, and Nielsen category signals.<br><br>
+    <span style="background:var(--bg4);padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;display:inline-block;margin-top:4px">SF = Baseline + Promo Lift + Category Growth Adj.</span><br><br>
+    <strong>Mar'26 example:</strong> Brand SF = 314,600 units = Σ(all retailer SF) × ASP $20.48 = <strong>$6.44M gross</strong></div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--red);margin-bottom:4px">Supply</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Ops Plan (OP)</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Supply-constrained shipment plan from Operations. Represents what can realistically ship given raw materials, production capacity, and DC inventory. In a supply-short scenario, OP &lt; SF.<br><br>
+    <span style="background:var(--bg4);padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;display:inline-block;margin-top:4px">OP = min(SF, Constrained_Supply)</span><br><br>
+    <strong>Mar'26 example:</strong> OP = 296,600 units — constrained by VCS1 L-Ascorbic Acid shortage (−12,400 units)</div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--amber);margin-bottom:4px">Planning Gap</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">S&amp;OP Gap (Units &amp; %)</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">The volume &amp; revenue at risk when SF &gt; OP. A positive gap means demand exceeds supply capability — revenue is potentially lost. A negative gap means excess supply risk (inventory build).<br><br>
+    <span style="background:var(--bg4);padding:3px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:10px;display:inline-block;margin-top:4px">Gap Units = SF − OP<br>Gap % = (SF − OP) / SF × 100</span><br><br>
+    <strong>Mar'26:</strong> 314,600 − 296,600 = <strong>18,000 units = 5.7% gap = ~$0.37M at risk</strong></div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--purple);margin-bottom:4px">Budget</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Annual Operating Plan (AOP)</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Pre-year committed revenue and volume budget set by Finance and Leadership. Incorporates prior-year actuals, Nielsen category growth outlook, new product launch assumptions, and strategic distribution targets. Fixed at year start; compared to rolling actuals monthly.<br><br>
+    <strong>FY2026 AOP:</strong> ~3.49M units / ~$71.5M gross revenue<br>
+    <strong>AOP assumption:</strong> +7.2% category growth (vs actual Nielsen Q1 +8.8%)</div>
+  </div>
+</div>
+
+<!-- SECTION: Forecast Accuracy -->
+<div style="display:flex;align-items:center;gap:10px;margin:14px 0 8px">
+  <span style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap">Forecast Accuracy Metrics</span>
+  <div style="flex:1;border-top:1px solid var(--border)"></div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:4px">Accuracy</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">MAPE SF% — Mean Absolute % Error (Sales Forecast)</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Measures average forecasting accuracy of the SF vs actuals, as a percentage. Lower = better. Calculated only over periods with confirmed actuals (Aug'25–Feb'26 = 7 periods).<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.8;margin:6px 0">
+      MAPE SF% = (1/n) × Σ |Actual_t − SF_t| / Actual_t × 100<br>
+      where n = number of completed actuals periods
+    </div>
+    <strong>Grading:</strong> A+ &lt;2% · A 2–5% · B 5–10% · C 10–15% · D &gt;15%<br>
+    <strong>Aug'25 example:</strong> |252,800 − 257,400| / 252,800 = 1.82%<br>
+    <strong>Brand 7-period MAPE SF ≈ 1.6%</strong> → Grade A+</div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--red);margin-bottom:4px">Accuracy</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">MAPE OP% — Mean Absolute % Error (Ops Plan)</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Same formula as MAPE SF% but using Ops Plan instead of SF. Typically slightly higher than MAPE SF because Ops Plan also absorbs supply-side uncertainty on top of demand uncertainty.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.8;margin:6px 0">
+      MAPE OP% = (1/n) × Σ |Actual_t − OP_t| / Actual_t × 100
+    </div>
+    <strong>Brand 7-period MAPE OP ≈ 2.0%</strong> → Grade A<br>
+    <strong>Interpretation:</strong> A higher MAPE OP than MAPE SF signals supply-side execution gaps beyond pure demand error</div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--amber);margin-bottom:4px">Bias</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Bias SF% — Systematic Forecast Direction</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Measures whether the Sales Forecast consistently over- or under-predicts actual demand across periods. Unlike MAPE (which uses absolute values), Bias preserves direction so positive/negative errors do not cancel.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.8;margin:6px 0">
+      Bias SF% = Σ(SF_t − Actual_t) / Σ(Actual_t) × 100<br><br>
+      Positive = SF over-forecasts (optimism bias)<br>
+      Negative = SF under-forecasts (conservative bias)
+    </div>
+    <strong>Aug–Feb example:</strong> Σ SF = 1,790,600 · Σ Actual = 1,744,200<br>
+    Bias = +46,400 / 1,744,200 × 100 = <strong>+2.7% (slight over-forecast)</strong></div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--purple);margin-bottom:4px">Scenario</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Scenario Bands — Bull / Base / Consensus / Bear</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Forward-looking demand scenarios generated from the Base Sales Forecast to bound the planning range and inform inventory build decisions.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:6px 0">
+      Bull     = SF × 1.15  (all promos fire + category upside)<br>
+      Base SF  = statistical baseline + confirmed promos<br>
+      Consensus= SF × 0.514 + OP × 0.486  (team-weighted)<br>
+      Bear     = SF × 0.84  (supply disruption + softening)
+    </div></div>
+  </div>
+</div>
+
+<!-- SECTION: Revenue & Trade -->
+<div style="display:flex;align-items:center;gap:10px;margin:14px 0 8px">
+  <span style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap">Revenue &amp; Trade Finance</span>
+  <div style="flex:1;border-top:1px solid var(--border)"></div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:4px">Revenue</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Gross Revenue → Net Revenue → Gross Profit Waterfall</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Three-step P&amp;L waterfall from invoice revenue to operating profit contribution.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:6px 0">
+      Gross Revenue  = Units × ASP ($20.48)<br>
+      Trade Spend    = Gross Revenue × Trade Rate%<br>
+      Net Revenue    = Gross Revenue − Trade Spend<br>
+      Gross Profit   = Net Revenue × Gross Margin Rate%
+    </div>
+    <strong>Mar'26 brand example:</strong><br>
+    Gross: 314,600 × $20.48 = <strong>$6.44M</strong><br>
+    Trade (12.8%): −$0.82M → Net: <strong>$5.62M</strong><br>
+    Gross Profit (61.4%): <strong>$3.45M</strong></div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:4px">Trade</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Trade Rate by Retailer &amp; Promo ROI</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Trade rate = all customer-facing spend (slotting fees, TPR, display allowances, co-op ads, scan-downs) as % of gross revenue. Varies widely by channel model.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:6px 0">
+      Amazon (AMS/PPC):  5.0%  — no slotting<br>
+      Target:           16.0%  — display + TPR<br>
+      Walmart:          18.0%  — highest; TPR + scan-down<br>
+      DTC:               2.0%  — coupon/email only<br>
+      Blended:          12.8%
+    </div>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin-top:6px">
+      Promo ROI = (Incr. Units × ASP) / Trade Spend<br>
+      Target threshold: ≥ 2.5× for approval
+    </div></div>
+  </div>
+</div>
+
+<!-- SECTION: Supply -->
+<div style="display:flex;align-items:center;gap:10px;margin:14px 0 8px">
+  <span style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap">Supply Chain Metrics</span>
+  <div style="flex:1;border-top:1px solid var(--border)"></div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--green);margin-bottom:4px">Inventory</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Days of Supply (DOS)</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">How many forward days of demand can be covered by current DC on-hand inventory at the prevailing demand rate.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:6px 0">
+      DOS = On-Hand Units ÷ (Monthly Demand ÷ 30)<br><br>
+      ≥ 14 days  → Healthy (green)<br>
+       8–13 days → Monitor  (amber)<br>
+       &lt; 8 days  → Critical (red) — stockout risk
+    </div>
+    <strong>Walmart Rogers DC, VCS1:</strong> 7 days → URGENT replenishment required. At current demand 8,200 units/month = 274 units/day, this DC runs dry in 7 days.</div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--red);margin-bottom:4px">Replenishment</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Replenishment Status Classification</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Each DC replenishment status is classified based on DOS vs minimum safety stock target.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:6px 0">
+      URGENT   — DOS &lt; 8d; order immediately<br>
+      Triggered — DOS 8–13d; PO in transit<br>
+      Pending   — New item / planned launch<br>
+      On Track  — DOS ≥ 14d; no action needed
+    </div>
+    Safety stock target: 14 days = 2× average retailer lead time of 7 days from DC to shelf.</div>
+  </div>
+</div>
+
+<!-- SECTION: Syndicated Data -->
+<div style="display:flex;align-items:center;gap:10px;margin:14px 0 8px">
+  <span style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap">Syndicated Data KPIs (NielsenIQ + Profitero)</span>
+  <div style="flex:1;border-top:1px solid var(--border)"></div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:4px">NielsenIQ</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">ACV% — All Commodity Volume Distribution</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">The percentage of total US retail store sales volume represented by stores that carry TruSkin. Weighted by store sales (not store count). A proxy for distribution reach — higher ACV = wider shelf presence relative to market volume.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:6px 0">
+      ACV% = Σ(Sales of stores stocking SKU) / Σ(All store sales) × 100<br><br>
+      TruSkin ACV: 73.6%  (Q1'26)<br>
+      Category leaders: ~90–95%<br>
+      Gap = $8.2M untapped annual opportunity
+    </div>
+    Each +1pp ACV ≈ +188 new stores × 0.89 units/store/wk × 52 wks = <strong>+~8,700 units/yr ≈ $177K</strong></div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:4px">NielsenIQ</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Units per Store per Week</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">Units sold per stocking store per week — the CPG industry standard measure of physical sell-through velocity. Unlike $/TDP/wk, this metric is price-neutral and directly comparable across price tiers and pack sizes.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:6px 0">
+      Units/Store/Wk = Total Units Sold / (Stocking Stores × Selling Weeks)<br><br>
+      TruSkin Brand:  0.89 u/store/wk (+25.4% vs category)<br>
+      Category avg:   0.71 u/store/wk<br>
+      VCS1 hero SKU:  1.24 u/store/wk
+    </div>
+    Higher units/store/wk = faster turns → stronger retailer reset position, lower markdown risk, justifies deeper distribution investment.</div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--purple);margin-bottom:4px">Profitero</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">In-Stock Rate % &amp; Demand Suppression Impact</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">The % of days/weeks a product shows as available on the digital shelf. Any in-stock rate below 100% means captured sales are lower than true unconstrained demand.<br><br>
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:6px 0">
+      Unconstrained Demand = Captured Sales ÷ In-Stock Rate<br><br>
+      Walmart VCS1: 72.4% in-stock<br>
+      → Lost demand = (1 − 0.724) × 8,200 = 2,263 units/mo<br>
+      → Revenue lost = 2,263 × $20.48 = ~$46K/month
+    </div>
+    Applied in S&amp;OP: actuals adjusted upward to reflect true demand signal when in-stock &lt;95%.</div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--teal);margin-bottom:4px">Profitero</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Search Rank, Content Score &amp; Price Compliance</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">
+    <strong>Search Rank:</strong> Amazon keyword rank for category terms. Lower rank = better organic visibility. Rank improvement directly drives velocity uplift.<br>
+    <div style="background:var(--bg4);padding:4px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin:4px 0">
+      VCS1: #8 (Aug'25) → #3 (Mar'26) → +19% velocity gain<br>
+      Each rank improvement pos 1–10 ≈ +3.8% organic velocity
+    </div>
+    <strong>Content Score (0–100):</strong> Listing quality score. Score &lt;85 = −8% conversion penalty applied to forward SF model.<br>
+    <strong>Price Compliance:</strong> Actual price / MAP × 100. Below 97% triggers trade finance alert.
+    <div style="background:var(--bg4);padding:4px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.9;margin-top:4px">
+      Walmart 5 SKUs at 97.2% compliance = −$0.51/unit = $28K/mo MAP erosion
+    </div></div>
+  </div>
+</div>
+
+<!-- SECTION: SKU & Channel -->
+<div style="display:flex;align-items:center;gap:10px;margin:14px 0 8px">
+  <span style="font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;white-space:nowrap">SKU &amp; Channel Definitions</span>
+  <div style="flex:1;border-top:1px solid var(--border)"></div>
+</div>
+<div class="g2" style="margin-bottom:10px">
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--brand);margin-bottom:4px">SKU Types</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Single vs Bundle / Kit Classification</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">
+    <strong>Single (S):</strong> One product in one pack. Revenue = 1 selling unit. Standard retail/e-commerce format. These are the primary demand-planning unit and have independent DC inventory and replenishment.<br><br>
+    <strong>Bundle / Kit (B):</strong> 2+ individual products sold together as one SKU. Revenue is captured at the bundle MSRP — higher ASP than individual items. Bundles are primarily Amazon and DTC exclusive. Important notes:<br>
+    • Bundle volume is NOT additive to component singles in demand planning (components are pulled for fulfillment)<br>
+    • Bundle MAPE tracked separately — typically higher variance due to gift/seasonal demand patterns<br>
+    • Bundle revenue ASP ranges $29.99–$59.99 vs single ASP $13–$36</div>
+  </div>
+  <div class="card">
+    <div style="font-size:9.5px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--blue);margin-bottom:4px">Channels</div>
+    <div style="font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px">Retailer / Channel Abbreviations</div>
+    <div style="font-size:11.5px;color:var(--text2);line-height:1.65">
+    <div style="background:var(--bg4);padding:6px 10px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:2;margin-bottom:6px">
+      A = Amazon.com          (42% of brand vol)<br>
+      W = Walmart.com + stores (21%)<br>
+      T = Target.com + stores  (15%)<br>
+      G = Walgreens             (10%)<br>
+      C = CVS Pharmacy           (7%)<br>
+      K = Kroger family          (3%)<br>
+      D = TruSkin.com DTC        (2%)
+    </div>
+    Trade rates: Amazon lowest (5%) due to PPC model vs mass retail 14–18% (slotting + TPR + display). DTC highest gross margin (72%) due to no trade deductions and MSRP pricing.</div>
+  </div>
+</div>
+</div>
+
+</div><!-- /#main -->
+
+<!-- ████ RENDER FUNCTIONS ████ -->
+<script>
+// Color palette for charts (visible on white background)
+const C={
+  brand:'#E8751A',blue:'#2878D4',green:'#1A9E5E',red:'#D43C3C',
+  amber:'#C47A18',purple:'#7450D4',teal:'#0D9488',gray:'#6B7280',
+  brandA:'rgba(232,117,26,.18)',blueA:'rgba(40,120,212,.18)',
+  greenA:'rgba(26,158,94,.18)',redA:'rgba(212,60,60,.18)'
+};
+const RCOLORS={amz:'#E8751A',wmt:'#2878D4',tgt:'#D43C3C',wag:'#C47A18',cvs:'#7450D4',kro:'#1A9E5E',dtc:'#E8751A'};
+
+// ── Global Chart.js defaults — interactive points on ALL charts ──
+Chart.defaults.font.family="'Inter',sans-serif";
+Chart.defaults.font.size=10;
+Chart.defaults.color='#9C968E';
+Chart.defaults.elements.point.radius=3;
+Chart.defaults.elements.point.hoverRadius=7;
+Chart.defaults.elements.point.hoverBorderWidth=2;
+Chart.defaults.plugins.tooltip.mode='index';
+Chart.defaults.plugins.tooltip.intersect=false;
+Chart.defaults.plugins.tooltip.backgroundColor='#1A1714';
+Chart.defaults.plugins.tooltip.titleColor='#F4F2EE';
+Chart.defaults.plugins.tooltip.bodyColor='#C0B8B0';
+Chart.defaults.plugins.tooltip.borderColor='#3A3530';
+Chart.defaults.plugins.tooltip.borderWidth=1;
+Chart.defaults.plugins.tooltip.padding=9;
+Chart.defaults.plugins.tooltip.cornerRadius=7;
+Chart.defaults.plugins.tooltip.callbacks=Chart.defaults.plugins.tooltip.callbacks||{};
+Chart.defaults.interaction={mode:'index',intersect:false};
+Chart.defaults.hover={mode:'index',intersect:false};
+
+// ── EXEC ──────────────────────────────────────────────────────
+function renderExec(D){
+  const {cSF,cOP,cGap,grossSF} = D;
+  const r=S.r;
+
+  // KPI cards — monthly
+  document.getElementById('k-sf').textContent = fU(cSF);
+  document.getElementById('k-op').textContent = fU(cOP);
+  document.getElementById('ex-gap-v').textContent = fU(cGap)+' units';
+  const febAct = gACT(r,6);
+  document.getElementById('k-act').textContent = fU(febAct);
+  const marRevK = cSF*ASP/1000;
+  document.getElementById('k-rev').textContent = fMonShort(marRevK);
+
+  // FY26 Annual totals — sum all 12 months from BSF/BOP, scaled by retailer share
+  let fysfU=0, fyopU=0;
+  for(let i=0;i<12;i++){ fysfU+=gSF(r,i); fyopU+=gOP(r,i); }
+  const fysfR = fysfU*ASP/1e6;   // $M
+  const fyopR = fyopU*ASP/1e6;   // $M
+  const fyGapU = fysfU-fyopU;
+  const fyGapPct = fyGapU/fyopU;
+
+  document.getElementById('k-fy-sf-u').textContent = fU(fysfU);
+  document.getElementById('k-fy-sf-r').textContent = '$'+fysfR.toFixed(2)+'M';
+  document.getElementById('k-fy-op-u').textContent = fU(fyopU);
+  document.getElementById('k-fy-op-r').textContent = '$'+fyopR.toFixed(2)+'M';
+  document.getElementById('k-fy-sf-u-sub').textContent = 'Full year Aug\'25–Jul\'26 · '+(r==='all'?'All channels':RETS[r].n);
+  document.getElementById('k-fy-op-u-sub').textContent = 'SF vs OP gap: '+(fyGapU>=0?'+':'')+fU(fyGapU)+' ('+fPn(fyGapPct)+')';
+  document.getElementById('k-fy-sf-r-sub').textContent = 'at ASP $20.48 · gross, pre-trade';
+  document.getElementById('k-fy-op-r-sub').textContent = 'vs SF: '+(fysfR>=fyopR?'+':'')+'$'+((fysfR-fyopR)).toFixed(2)+'M';
+
+  // Trend chart
+  mc('ch-trend',{type:'line',data:{labels:D.months,datasets:[
+    {label:'Actual',data:D.act.map(v=>v!=null?(v/1000):null),borderColor:C.green,backgroundColor:C.greenA,borderWidth:2.5,tension:.35,fill:true,spanGaps:false,pointRadius:3,pointBackgroundColor:C.green},
+    {label:'Sales Fcst',data:D.sf.map(v=>v/1000),borderColor:C.blue,borderWidth:2,tension:.35,fill:false,borderDash:[],pointRadius:2},
+    {label:'Ops Plan',data:D.op.map(v=>v/1000),borderColor:C.red,borderWidth:1.5,tension:.35,fill:false,borderDash:[5,3],pointRadius:2},
+    {label:'AOP',data:D.aop.map(v=>v/1000),borderColor:C.purple,borderWidth:1.5,tension:.35,fill:false,borderDash:[3,4],pointRadius:3,pointBackgroundColor:C.purple,pointHoverRadius:6,pointHoverBackgroundColor:C.purple},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,padding:10,font:{size:9}}}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v.toFixed(0)+'K'}}}}});
+
+  // Donut
+  const rks=Object.keys(RETS);
+  const donutData=rks.map(rk=>gSF(rk,NI));
+  mc('ch-donut',{type:'doughnut',data:{labels:rks.map(rk=>RETS[rk].n),datasets:[{
+    data:donutData,
+    backgroundColor:rks.map(rk=>RCOLORS[rk]+'CC'),
+    borderColor:'#FFFFFF',borderWidth:2
+  }]},options:{cutout:'62%',plugins:{legend:{display:false}}}});
+  const dl=document.getElementById('donut-leg');
+  if(dl)dl.innerHTML=rks.map(rk=>`<div class="br" style="margin-bottom:4px"><div class="bl" style="width:90px;font-size:10.5px;color:${RCOLORS[rk]};font-weight:500">${RETS[rk].n}</div><div class="bt2"><div class="bf" style="width:${(rsh(rk,NI)/.42*100).toFixed(0)}%;background:${RCOLORS[rk]}99"></div></div><div class="bv2">${(rsh(rk,NI)*100).toFixed(0)}%</div></div>`).join('');
+
+  // Retailer gap bar - horizontal for clarity
+  const rNames=rks.map(rk=>RETS[rk].s);
+  const rSF=rks.map(rk=>+(gSF(rk,NI)/1000).toFixed(1));
+  const rOP=rks.map(rk=>+(gOP(rk,NI)/1000).toFixed(1));
+  mc('ch-retgap',{type:'bar',data:{labels:rNames,datasets:[
+    {label:'Sales Fcst',data:rSF,backgroundColor:'rgba(40,120,212,.75)',borderRadius:3},
+    {label:'Ops Plan', data:rOP,backgroundColor:'rgba(212,60,60,.70)',borderRadius:3},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v+'K'}}},
+    onClick:(e,els)=>{if(els.length){const rk=rks[els[0].index];const btn=document.querySelector(`#ret-chips .chip:nth-child(${rks.indexOf(rk)+2})`);if(btn)btn.click();}}}});
+
+  // Category Revenue Mix (from SKUS data — annual)
+  const catMix=getCategoryMix();
+  const annK2=(r==='all'?BSF.reduce((a,v)=>a+v,0):gSF(r,NI)*12);
+  mc('ch-coll',{type:'bar',data:{labels:catMix.map(([c])=>c),datasets:[{
+    label:'Est. Annual Revenue $M',
+    data:catMix.map(([,{volWt}])=>+(annK2*volWt*ASP/1000000).toFixed(2)),
+    backgroundColor:CAT_COLORS.map(c=>c+'CC'),borderRadius:3
+  }]},options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.formattedValue}M (${(catMix[ctx.dataIndex][1].volWt*100).toFixed(1)}%)`}}},
+    scales:{x:{grid:GR,ticks:{...TK,callback:v=>'$'+v+'M'}},y:{grid:GR,ticks:TK}}}});
+  buildCategoryExpander('cat-tree-exec',gSF(r,NI));
+
+  // SKU bars - key fix: use absolute pixel widths with proper scale
+  const top8=SKUS.slice(0,8);
+  const annBrand=BSF.reduce((a,v)=>a+v,0); // FY26 SF total
+  const maxU=Math.round(annBrand*top8[0][6]);
+  const sb=document.getElementById('sku-bars');
+  if(sb){
+    const tagMap={'BEST SELLER':'<span class="tag t-bs">Best Seller</span>','NEW':'<span class="tag t-new">New</span>','NEW / SALE':'<span class="tag t-new">New</span>','SEASONAL':'<span class="tag t-seas">Seasonal</span>'};
+    sb.innerHTML=top8.map(s=>{
+      const eu=Math.round(annBrand*s[6]);
+      const pct=Math.max(3,Math.round(eu/maxU*100));
+      const tg=s[7]?tagMap[s[7]]||'':'';
+      return`<div class="br"><div class="bl" style="width:150px;font-size:11px">${s[2].substring(0,22)} ${tg}</div><div class="bt2"><div class="bf" style="width:${pct}%;background:${C.brand}CC"></div></div><div class="bv2" style="font-size:11px;font-weight:500">${fU(eu)}</div></div>`;
+    }).join('');
+  }
+}
+
+// ── DEMAND ────────────────────────────────────────────────────
+function renderDemand(D){
+  mc('ch-dem-main',{type:'bar',data:{labels:D.months,datasets:[
+    {type:'line',label:'Actual',data:D.act.map(v=>v!=null?v/1000:null),borderColor:C.green,borderWidth:2.5,tension:.3,fill:false,spanGaps:false,pointRadius:3,order:0},
+    {type:'line',label:'AOP',   data:D.aop.map(v=>v/1000),borderColor:C.purple,borderWidth:1.5,borderDash:[4,3],tension:.3,fill:false,pointRadius:3,pointBackgroundColor:C.purple,pointHoverRadius:6,order:1},
+    {label:'Sales Fcst',data:D.sf.map(v=>v/1000),backgroundColor:'rgba(40,120,212,.22)',borderColor:'rgba(40,120,212,.7)',borderWidth:1,borderRadius:2,order:3},
+    {label:'Ops Plan', data:D.op.map(v=>v/1000),backgroundColor:'rgba(212,60,60,.15)',borderColor:'rgba(212,60,60,.5)',borderWidth:1,borderRadius:2,order:4},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v.toFixed(0)+'K'}}}}});
+
+  mc('ch-promo',{type:'bar',data:{labels:D.months,datasets:[{
+    label:'Promo Units',data:D.prm.map(v=>v/1000),
+    backgroundColor:'rgba(196,122,24,.65)',borderRadius:3
+  }]},options:{plugins:{legend:{display:false}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v.toFixed(1)+'K'}}}}});
+
+  const fI=[7,8,9,10,11];
+  mc('ch-scenarios',{type:'line',data:{labels:fI.map(i=>ML[i]),datasets:[
+    {label:'Bull ×1.15',data:fI.map(i=>+(gSF(S.r,i)*1.15/1000).toFixed(1)),borderColor:C.green,borderWidth:2,fill:'+2',backgroundColor:'rgba(26,158,94,.08)',tension:.3},
+    {label:'Base SF',   data:fI.map(i=>+(gSF(S.r,i)/1000).toFixed(1)),borderColor:C.blue,borderWidth:2.5,fill:false,tension:.3},
+    {label:'Consensus', data:fI.map(i=>+((gSF(S.r,i)*.514+gOP(S.r,i)*.486)/1000).toFixed(1)),borderColor:C.purple,borderWidth:1.5,borderDash:[4,3],fill:false,tension:.3,pointRadius:3,pointBackgroundColor:C.purple,pointHoverRadius:6},
+    {label:'Bear ×0.84',data:fI.map(i=>+(gSF(S.r,i)*0.84/1000).toFixed(1)),borderColor:C.red,borderWidth:2,fill:'-2',backgroundColor:'rgba(212,60,60,.06)',tension:.3},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v+'K'}}}}});
+
+  // Category Mix from SKUS data
+  const catMix2=getCategoryMix();
+  const cSF=gSF(S.r,NI);
+  mc('ch-coll2',{type:'bar',data:{labels:catMix2.map(([c])=>c),datasets:[{
+    label:'Mar SF (K units)',
+    data:catMix2.map(([,{volWt}])=>+(cSF*volWt/1000).toFixed(1)),
+    backgroundColor:CAT_COLORS.map(c=>c+'BB'),borderRadius:3
+  }]},options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>{const [,{volWt}]=catMix2[ctx.dataIndex];return`${ctx.formattedValue}K (${(volWt*100).toFixed(1)}%)`;} }}},
+    scales:{x:{grid:GR,ticks:{...TK,callback:v=>v+'K'}},y:{grid:GR,ticks:TK}}}});
+  buildCategoryExpander('cat-tree-demand',cSF);
+
+  // All SKUs × Retailer matrix (all 38)
+  const rks=Object.keys(RETS);
+  const div=document.getElementById('sku-ret-matrix');
+  if(div){
+    let h=`<table style="font-size:10.5px"><thead><tr><th>SKU Name</th><th>Cat</th>${rks.map(rk=>`<th class="nr">${RETS[rk].s}</th>`).join('')}<th class="nr">Total</th></tr></thead><tbody>`;
+    let lastCat='';
+    SKUS.forEach(s=>{
+      if(s[4]!==lastCat){lastCat=s[4];h+=`<tr style="background:var(--bg4)"><td colspan="${3+rks.length}" style="font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:4px 10px">${s[4]}</td></tr>`;}
+      const cells=rks.map(rk=>{const u=Math.round(gSF(rk,NI)*s[6]);return u>0?`<td class="nr">${fUshort(u)}</td>`:`<td class="nr" style="color:var(--text3)">—</td>`;}).join('');
+      const tot=rks.reduce((a,rk)=>a+Math.round(gSF(rk,NI)*s[6]),0);
+      const tg=!s[7]?'':s[7]==='BEST SELLER'?'<span class="tag t-bs">Best</span>':s[7]==='NEW'?'<span class="tag t-new">New</span>':s[7]==='SEASONAL'?'<span class="tag t-seas">Seas</span>':'';
+      h+=`<tr><td style="color:var(--text)">${s[2]} ${tg}</td><td style="font-size:10px;color:var(--text3)">${s[4]}</td>${cells}<td class="nr" style="font-weight:600;color:var(--text)">${fUshort(tot)}</td></tr>`;
+    });
+    h+=`</tbody></table>`;
+    div.innerHTML=h;
+  }
+}
+
+// ── SOP ───────────────────────────────────────────────────────
+function renderSOP(D){
+  const {cSF,cOP}=D,r=S.r;
+  const mults={nam:1.028,ops:0.967,fin:0.962,dp:0.990};
+  const teamColors={'Sales / NAM':C.blue,'Operations':C.red,'Finance':C.purple,'Dem. Planning':C.green};
+  mc('ch-teams',{type:'bar',data:{labels:['Sales/NAM','Operations','Finance','Dem. Planning','Ops Plan'],
+    datasets:[{label:'Submitted Units (K)',
+      data:[Math.round(cSF*mults.nam),Math.round(cSF*mults.ops),Math.round(cSF*mults.fin),Math.round(cSF*mults.dp),cOP].map(v=>+(v/1000).toFixed(1)),
+      backgroundColor:[C.blue+'99',C.red+'99',C.purple+'99',C.green+'99','rgba(212,60,60,.4)'],borderRadius:3
+    }]},options:{plugins:{legend:{display:false}},
+      scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v+'K'},grace:'5%'}}}});
+
+  Object.entries(mults).forEach(([t,m])=>{
+    const sub=Math.round(cSF*m),gap=sub-cOP;
+    const sel=document.getElementById('s-'+t); const gsel=document.getElementById('sg-'+t);
+    if(sel)sel.textContent=fU(sub);
+    if(gsel){gsel.textContent=(gap>=0?'+':'')+fU(gap);gsel.className='nr '+(gap>0?'warn':'neg');}
+  });
+
+  const fI=[NI,NI+1,NI+2];
+  mc('ch-conv',{type:'line',data:{labels:fI.map(i=>ML[i]),datasets:[
+    {label:'Sales/NAM',   data:fI.map((i,j)=>+(gSF(r,i)*mults.nam*(1-j*.003)/1000).toFixed(1)),borderColor:C.blue,borderWidth:2,tension:.3,fill:false,pointRadius:4},
+    {label:'Operations',  data:fI.map((i,j)=>+(gSF(r,i)*mults.ops*(1+j*.004)/1000).toFixed(1)),borderColor:C.red,borderWidth:2,tension:.3,fill:false,pointRadius:4},
+    {label:'Finance',     data:fI.map((i,j)=>+(gSF(r,i)*mults.fin*(1+j*.003)/1000).toFixed(1)),borderColor:C.purple,borderWidth:2,tension:.3,fill:false,pointRadius:4},
+    {label:'Dem. Planning',data:fI.map((i,j)=>+(gSF(r,i)*mults.dp/1000).toFixed(1)),borderColor:C.green,borderWidth:2,tension:.3,fill:false,pointRadius:4},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v+'K'}}}}});
+
+  const div=document.getElementById('sku-gap-tbl');
+  if(div){
+    let h=`<table style="font-size:10.5px"><thead><tr><th>SKU</th><th>Category</th><th class="nr">Mar SF</th><th class="nr">Mar OP</th><th class="nr">Gap (Units)</th><th class="nr">Gap%</th><th class="nr">Est. $Impact</th><th>Priority</th></tr></thead><tbody>`;
+    let lastCat='';
+    SKUS.forEach(s=>{
+      if(s[4]!==lastCat){lastCat=s[4];h+=`<tr style="background:var(--bg4)"><td colspan="8" style="font-size:9px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:4px 10px">${s[4]}</td></tr>`;}
+      const sf=Math.round(gSF(r,NI)*s[6]),op=Math.round(gOP(r,NI)*s[6]),gap=sf-op,gpct=sf>0?gap/sf:0;
+      const dolImpact=gap*s[5]/1000;
+      const pri=gpct>.08?'<span class="pill p-err">High</span>':gpct>.04?'<span class="pill p-warn">Med</span>':'<span class="pill p-ok">Low</span>';
+      h+=`<tr><td style="color:var(--text);font-weight:500">${s[2]}</td><td style="color:var(--text3);font-size:10px">${s[4]}</td><td class="nr">${fUshort(sf)}</td><td class="nr">${fUshort(op)}</td><td class="nr ${gap>0?'warn':gap<0?'neg':''}">${gap>=0?'+':''}${fUshort(gap)}</td><td class="nr ${gpct>.05?'warn':gpct<-.05?'neg':''}">${fP(gpct)}</td><td class="nr ${dolImpact<0?'neg':dolImpact>2?'warn':''}">${dolImpact>=0?'+':''}${fMonShort(dolImpact)}</td><td>${pri}</td></tr>`;
+    });
+    // Totals row
+    const totSF=Math.round(gSF(r,NI)),totOP=Math.round(gOP(r,NI)),totGap=totSF-totOP;
+    h+=`<tr style="background:var(--bg4);font-weight:600"><td colspan="2" style="color:var(--text)">TOTAL BRAND</td><td class="nr">${fUshort(totSF)}</td><td class="nr">${fUshort(totOP)}</td><td class="nr ${totGap>0?'warn':'neg'}">${totGap>=0?'+':''}${fUshort(totGap)}</td><td class="nr ${totGap>0?'warn':'neg'}">${fP(totGap/totSF)}</td><td class="nr">${fMonShort((totGap*ASP)/1000)}</td><td></td></tr>`;
+    h+=`</tbody></table>`;div.innerHTML=h;
+  }
+}
+
+// ── AOP ───────────────────────────────────────────────────────
+function renderAOP(D){
+  const r=S.r;
+  let ytdAct=0,ytdAOP=0;
+  for(let i=0;i<7;i++){ytdAct+=gACT(r,i)||0;ytdAOP+=gAOP(r,i);}
+  let h2SF=0;for(let i=NI;i<12;i++)h2SF+=gSF(r,i);
+  let fyAOP=0;for(let i=0;i<12;i++)fyAOP+=gAOP(r,i);
+  const fyFcst=ytdAct+h2SF;
+  const ytdGap=ytdAct-ytdAOP,fyGap=fyFcst-fyAOP;
+
+  document.getElementById('aop-fy-plan').textContent=fMonShort(fyAOP*ASP/1000);
+  document.getElementById('aop-ytd-act').textContent=fMonShort(ytdAct*ASP/1000);
+  document.getElementById('aop-ytd-vs').textContent='AOP: '+fMonShort(ytdAOP*ASP/1000);
+  document.getElementById('aop-ytd-gap').textContent=(ytdGap>=0?'+':'')+fU(ytdGap)+' u';
+  document.getElementById('aop-ytd-pct').textContent=fP(ytdGap/ytdAOP)+(ytdGap<0?' below AOP':' above AOP');
+  document.getElementById('aop-h2').textContent=fMonShort(h2SF*ASP/1000);
+  document.getElementById('aop-fy-gap').textContent=(fyGap>=0?'+':'')+fU(fyGap)+' u';
+  document.getElementById('aop-fy-pct').textContent=fP(fyGap/fyAOP)+(fyGap<0?' below AOP':' above AOP');
+
+  mc('ch-aop-main',{type:'bar',data:{labels:D.months,datasets:[
+    {type:'line',label:'Actual',data:D.act.map(v=>v!=null?+(v/1000).toFixed(1):null),borderColor:C.green,borderWidth:2.5,tension:.3,fill:false,spanGaps:false,pointRadius:3,order:0},
+    {type:'line',label:'AOP Target',data:D.aop.map(v=>+(v/1000).toFixed(1)),borderColor:C.purple,borderWidth:1.5,borderDash:[5,3],tension:.3,fill:false,pointRadius:3,pointBackgroundColor:C.purple,pointHoverRadius:6,order:1},
+    {label:'Sales Forecast',data:D.sf.map(v=>+(v/1000).toFixed(1)),backgroundColor:'rgba(40,120,212,.2)',borderColor:'rgba(40,120,212,.6)',borderWidth:1,borderRadius:2,order:3},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v.toFixed(0)+'K'}}}}});
+
+  const varPct=D.months.map((m,i)=>{
+    const actual=D.act[i]!=null?D.act[i]:D.sf[i];
+    return+(((actual-D.aop[i])/D.aop[i])*100).toFixed(1);
+  });
+  mc('ch-aop-var',{type:'bar',data:{labels:D.months,datasets:[{
+    label:'Actual/SF vs AOP%',data:varPct,
+    backgroundColor:varPct.map(v=>v>=0?'rgba(26,158,94,.65)':'rgba(212,60,60,.65)'),borderRadius:3
+  }]},options:{plugins:{legend:{display:false}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>v+'%'},grace:'15%'}}}});
+
+  const div=document.getElementById('aop-ret-tbl');
+  if(div){
+    const rks=Object.keys(RETS);
+    let h=`<table><thead><tr><th>Retailer</th><th class="nr">AOP YTD</th><th class="nr">Actual YTD</th><th class="nr">Variance</th><th class="nr">Var%</th><th>Status</th></tr></thead><tbody>`;
+    rks.forEach(rk=>{
+      let a=0,ac=0;for(let i=0;i<7;i++){a+=gAOP(rk,i);ac+=gACT(rk,i)||0;}
+      const v=ac-a,vp=v/a;
+      const st=vp>-.02?'<span class="pill p-ok">On Track</span>':vp>-.05?'<span class="pill p-warn">Monitor</span>':'<span class="pill p-err">At Risk</span>';
+      h+=`<tr><td style="color:${RCOLORS[rk]};font-weight:500">${RETS[rk].n}</td><td class="nr">${fMonShort(a*ASP/1000)}</td><td class="nr">${fMonShort(ac*ASP/1000)}</td><td class="nr ${v<0?'neg':'pos'}">${v>=0?'+':''}${fU(v)} u</td><td class="nr ${vp<-.03?'warn':''}">${fP(vp)}</td><td>${st}</td></tr>`;
+    });
+    h+=`</tbody></table>`;div.innerHTML=h;
+  }
+}
+
+// ── TRADE ─────────────────────────────────────────────────────
+function renderTrade(D){
+  const {cSF,trR,gm,grossSF,tradeSp,netSF,gpSF}=D;
+  const mGross=+(cSF*ASP/1000).toFixed(1);
+  const mTrade=+(mGross*trR).toFixed(1);
+  const mNet=+(mGross-mTrade).toFixed(1);
+  const mGP=+(mNet*gm).toFixed(1);
+
+  document.getElementById('tr-gross').textContent=fMonShort(mGross);
+  document.getElementById('tr-trade').textContent=fMonShort(mTrade);
+  document.getElementById('tr-net').textContent=fMonShort(mNet);
+  document.getElementById('tr-gm').textContent=fMonShort(mGP);
+  document.getElementById('tr-rate-lbl').textContent='Rate: '+(trR*100).toFixed(1)+'%';
+  document.getElementById('tr-gm-pct').textContent='GM '+(gm*100).toFixed(1)+'% after COGS';
+
+  // Revenue chart in $M
+  mc('ch-trade-rev',{type:'bar',data:{labels:D.months,datasets:[
+    {label:'Gross Revenue $M',data:grossSF.map(v=>+(v/1000).toFixed(2)),backgroundColor:'rgba(40,120,212,.2)',borderColor:'rgba(40,120,212,.5)',borderWidth:1,borderRadius:2},
+    {type:'line',label:'Net Revenue $M',data:netSF.map(v=>+(v/1000).toFixed(2)),borderColor:C.green,borderWidth:2.5,tension:.3,fill:false,pointRadius:2},
+    {type:'line',label:'Gross Profit $M',data:gpSF.map(v=>+(v/1000).toFixed(2)),borderColor:C.purple,borderWidth:1.5,borderDash:[4,3],tension:.3,fill:false,pointRadius:3,pointBackgroundColor:C.purple,pointHoverRadius:6},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>'$'+v+'M'}}}}});
+
+  const tb=document.getElementById('trade-bars');
+  if(tb){
+    const rks=Object.keys(RETS);
+    tb.innerHTML=rks.map(rk=>`<div class="br"><div class="bl" style="font-size:11px;color:${RCOLORS[rk]};font-weight:500;width:80px">${RETS[rk].n}</div><div class="bt2"><div class="bf" style="width:${(RETS[rk].tr/.18*100).toFixed(0)}%;background:${RCOLORS[rk]}AA"></div></div><div class="bv2" style="font-size:11px;font-weight:600">${(RETS[rk].tr*100).toFixed(0)}%</div></div>`).join('');
+  }
+
+  // Waterfall in $M — mGross/mTrade/mNet/mGP are in $K, divide by 1000 for $M
+  const wfLabels=['Gross Revenue','Trade Spend','Net Revenue','COGS','Gross Profit'];
+  const wfVals=[+(mGross/1000).toFixed(2),+((-mTrade)/1000).toFixed(2),+(mNet/1000).toFixed(2),+(-(mNet*(1-gm))/1000).toFixed(2),+(mGP/1000).toFixed(2)];
+  mc('ch-waterfall',{type:'bar',data:{labels:wfLabels,datasets:[{
+    label:'$M',data:wfVals,
+    backgroundColor:['rgba(40,120,212,.7)','rgba(212,60,60,.6)','rgba(26,158,94,.5)','rgba(212,60,60,.45)','rgba(26,158,94,.8)'],
+    borderRadius:4
+  }]},options:{plugins:{legend:{display:false}},
+    scales:{x:{grid:GR,ticks:TK},y:{grid:GR,ticks:{...TK,callback:v=>'$'+v+'M'}}}}});
+}
+
+// ── SUPPLY ────────────────────────────────────────────────────
+function renderSupply(){
+  const dcNames=['WMT Rogers AR','WMT Bentonville AR','TGT Brooklyn Park MN','AMZ ONT8 Fontana CA','AMZ TEB9 Carteret NJ','WAG Perrysburg OH','CVS Woonsocket RI','KRO Cincinnati OH','DTC Reno NV'];
+  const dosData=[7,6,11,15,14,13,16,10,18];
+  const dosColors=dosData.map(d=>d<8?'rgba(212,60,60,.75)':d<14?'rgba(196,122,24,.75)':'rgba(26,158,94,.75)');
+  mc('ch-dos',{type:'bar',data:{labels:dcNames,datasets:[{
+    label:'VCS1 Days of Supply',data:dosData,backgroundColor:dosColors,borderRadius:4
+  }]},options:{indexAxis:'y',plugins:{legend:{display:false},
+    annotation:{annotations:{line:{type:'line',xMin:14,xMax:14,borderColor:'rgba(212,60,60,.5)',borderWidth:1.5,borderDash:[4,3]}}}},
+    scales:{x:{grid:GR,ticks:TK,min:0,max:25},y:{grid:GR,ticks:TK}}}});
+}
+
+// ── NIELSEN ───────────────────────────────────────────────────
+function renderNielsen(){
+  // Chart 1: TruSkin $M as bars + TruSkin Growth% + Category Growth% as lines
+  // All on same scale since we only show TruSkin $M (left) and growth % (right)
+  const qtrs=["Q2'25","Q3'25","Q4'25","Q1'26"];
+  const tsM=[21.0,22.6,27.9,26.1];          // TruSkin $M
+  const tsGr=[28.4,26.8,29.2,31.4];          // TruSkin YoY growth%
+  const catGr=[7.2,8.1,9.4,8.8];             // Category YoY growth%
+
+  mc('ch-nq-trend',{type:'bar',data:{labels:qtrs,datasets:[
+    {type:'bar',label:'TruSkin Sales ($M)',data:tsM,backgroundColor:'rgba(232,117,26,.25)',borderColor:'rgba(232,117,26,.7)',borderWidth:1.5,borderRadius:3,yAxisID:'y'},
+    {type:'line',label:'TruSkin Growth%',data:tsGr,borderColor:C.brand,backgroundColor:'transparent',borderWidth:2.5,tension:.3,pointRadius:5,pointBackgroundColor:C.brand,yAxisID:'y2'},
+    {type:'line',label:'Category Growth%',data:catGr,borderColor:C.blue,backgroundColor:'transparent',borderWidth:2,borderDash:[4,3],tension:.3,pointRadius:4,pointBackgroundColor:C.blue,yAxisID:'y2'},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:9}}}},
+    scales:{
+      x:{grid:GR,ticks:TK},
+      y:{grid:GR,ticks:{...TK,callback:v=>'$'+v+'M'},title:{display:true,text:'TruSkin Sales ($M)',font:{size:9},color:'#9C968E'},min:18,max:30,position:'left'},
+      y2:{ticks:{...TK,callback:v=>v+'%'},title:{display:true,text:'Growth% YoY',font:{size:9},color:'#9C968E'},position:'right',grid:{display:false},min:0,max:40}
+    }}});
+
+  const brands=["TruSkin","CeraVe","Neutrogena","Paula's","The Ordinary","Inkey List","Murad","Priv Label"];
+  const sharesByQtr=[[3.4,3.6,3.9,4.1],[10.4,10.8,11.2,11.6],[8.8,8.6,8.4,8.2],[4.4,4.6,4.8,5.0],[7.2,7.0,6.8,6.6],[2.2,2.4,2.6,2.8],[2.8,3.0,3.1,3.2],[7.2,7.4,7.2,7.0]];
+  const bCols2=[C.brand,C.blue,C.purple,C.green,C.red,C.amber,C.teal,C.gray];
+  // Latest quarter share
+  const shares=sharesByQtr.map(q=>q[3]);
+  const selBrand={idx:-1};
+  const compChart=mc('ch-comp-share',{type:'bar',data:{labels:brands,datasets:[{
+    label:"Q1'26 Dollar Share%",data:shares,
+    backgroundColor:bCols2.map((c,i)=>i===0?c+'EE':c+'88'),
+    hoverBackgroundColor:bCols2.map(c=>c+'EE'),
+    borderRadius:4
+  }]},options:{indexAxis:'y',
+    plugins:{legend:{display:false},
+      tooltip:{mode:'index',intersect:false,callbacks:{
+        title:([ctx])=>brands[ctx.dataIndex]+' — Q1\'26',
+        label:ctx=>[`Share: ${ctx.formattedValue}%`,`Q2'25→Q1'26: ${sharesByQtr[ctx.dataIndex].join('% → ')}%`,`Δ YoY: ${(sharesByQtr[ctx.dataIndex][3]-sharesByQtr[ctx.dataIndex][0]).toFixed(1)}pp`]
+      }}},
+    onClick:(evt,els)=>{
+      if(!els.length)return;
+      const i=els[0].index;
+      selBrand.idx=(selBrand.idx===i)?-1:i;
+      compChart.data.datasets[0].backgroundColor=bCols2.map((c,j)=>{
+        if(selBrand.idx===-1)return j===0?c+'EE':c+'88';
+        return j===selBrand.idx?c+'EE':c+'33';
+      });
+      compChart.update('none');
+      // Update trend line below chart
+      const trendDiv=document.getElementById('share-trend');
+      if(trendDiv&&selBrand.idx>=0){
+        const b=brands[selBrand.idx];const d=sharesByQtr[selBrand.idx];
+        trendDiv.innerHTML=`<div class="insight in-bl" style="font-size:10.5px;margin-top:8px"><strong>${b}</strong> share trend: Q2'25 <strong>${d[0]}%</strong> → Q3'25 <strong>${d[1]}%</strong> → Q4'25 <strong>${d[2]}%</strong> → Q1'26 <strong>${d[3]}%</strong> · Δ <strong style="color:${d[3]>d[0]?'var(--greens)':'var(--red)'}">${d[3]>d[0]?'+':''}${(d[3]-d[0]).toFixed(1)}pp</strong> over 4 quarters</div>`;
+      } else if(trendDiv){trendDiv.innerHTML='';}
+    },
+    scales:{x:{grid:GR,ticks:{...TK,callback:v=>v+'%'},max:14},y:{grid:GR,ticks:TK}}}});
+
+
+  mc('ch-acv',{type:'line',data:{labels:qtrs,datasets:[
+    {label:'TruSkin ACV%',data:[70.2,71.4,72.8,73.6],borderColor:C.brand,backgroundColor:'rgba(232,117,26,.12)',fill:true,tension:.3,pointRadius:4,yAxisID:'y'},
+    {label:'Dollar Share%',data:[3.4,3.6,3.9,4.1],borderColor:C.greens||C.green,borderWidth:2.5,tension:.3,fill:false,pointRadius:4,yAxisID:'y2'},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+    scales:{
+      x:{grid:GR,ticks:TK},
+      y:{grid:GR,ticks:{...TK,callback:v=>v+'%'},position:'left',min:68,max:76},
+      y2:{ticks:{...TK,callback:v=>v+'%'},position:'right',grid:{display:false},min:2,max:5}
+    }}});
+}
+
+// ── PROFITERO ─────────────────────────────────────────────────
+function renderProfitero(){
+  mc('ch-rank',{type:'line',data:{labels:["Aug'25","Sep'25","Oct'25","Nov'25","Dec'25","Jan'26","Feb'26","Mar'26"],datasets:[
+    {label:'VCS1',data:[8,7,6,5,4,3,3,3],borderColor:C.brand,borderWidth:2.5,tension:.3,pointRadius:4},
+    {label:'VCSS',data:[18,17,16,14,12,11,10,10],borderColor:C.blue,borderWidth:1.5,tension:.3,pointRadius:3},
+    {label:'RET1',data:[12,11,10,10,9,8,8,7],borderColor:C.purple,borderWidth:1.5,tension:.3,pointRadius:3},
+    {label:'HAS1',data:[20,19,18,17,15,14,13,12],borderColor:C.green,borderWidth:1.5,tension:.3,pointRadius:3},
+  ]},options:{plugins:{legend:{position:'bottom',labels:{boxWidth:8,font:{size:9}}}},
+    scales:{x:{grid:GR,ticks:TK},y:{reverse:true,grid:GR,ticks:{...TK,callback:v=>'#'+v},min:1,max:22,title:{display:true,text:'← Better rank',font:{size:9},color:'#9C968E'}}}}});
+}
+
+// ── SKUS ──────────────────────────────────────────────────────
+function renderSKUs(){
+  const tbody=document.getElementById('sku-master-rows');
+  if(!tbody)return;
+  const annBrand=BSF.reduce((a,v)=>a+v,0); // FY26 SF total = 3,707,100 — consistent with all pages
+  // group header rows by category
+  let lastCat='';
+  tbody.innerHTML=SKUS.map((s,i)=>{
+    const eu=Math.round(annBrand*s[6]);
+    const erevM=+(eu*ASP/1000000).toFixed(3); // use ASP $20.48, not MSRP
+    const type=s[8]||'S';
+    const channels=(s[9]||'A,D').split(',');
+    const chBadges=channels.map(c=>{
+      const cmap={A:'<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:8.5px;font-weight:600;background:rgba(232,117,26,.12);color:#E8751A;border:1px solid rgba(232,117,26,.25)">AMZ</span>',
+                  W:'<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:8.5px;font-weight:600;background:rgba(40,120,212,.1);color:#2878D4;border:1px solid rgba(40,120,212,.2)">WMT</span>',
+                  T:'<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:8.5px;font-weight:600;background:rgba(212,60,60,.1);color:#D43C3C;border:1px solid rgba(212,60,60,.2)">TGT</span>',
+                  G:'<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:8.5px;font-weight:600;background:rgba(196,122,24,.1);color:#C47A18;border:1px solid rgba(196,122,24,.2)">WAG</span>',
+                  C:'<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:8.5px;font-weight:600;background:rgba(116,80,212,.1);color:#7450D4;border:1px solid rgba(116,80,212,.2)">CVS</span>',
+                  K:'<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:8.5px;font-weight:600;background:rgba(26,158,94,.1);color:#1A9E5E;border:1px solid rgba(26,158,94,.2)">KRO</span>',
+                  D:'<span style="display:inline-block;padding:1px 5px;border-radius:3px;font-size:8.5px;font-weight:600;background:rgba(232,117,26,.08);color:#C45E0E;border:1px solid rgba(232,117,26,.15)">DTC</span>'};
+      return cmap[c]||'';
+    }).join('&nbsp;');
+    let tg='—';
+    if(i===0)tg='<span class="tag t-hero">HERO</span>';
+    else if(s[7]==='BEST SELLER')tg='<span class="tag t-bs">Best Seller</span>';
+    else if(s[7]==='NEW')tg='<span class="tag t-new">New</span>';
+    else if(s[7]==='NEW / SALE')tg='<span class="tag t-new">New</span>&nbsp;<span class="tag t-sale">Sale</span>';
+    else if(s[7]==='SEASONAL')tg='<span class="tag t-seas">Seasonal</span>';
+    else if(s[7]==='SALE')tg='<span class="tag t-sale">Sale</span>';
+    const typeBadge=type==='B'
+      ?'<span style="padding:1px 7px;border-radius:3px;font-size:9px;font-weight:600;background:rgba(13,148,136,.1);color:#0D9488;border:1px solid rgba(13,148,136,.25)">Bundle</span>'
+      :'<span style="padding:1px 7px;border-radius:3px;font-size:9px;font-weight:600;background:var(--bg4);color:var(--text3);border:1px solid var(--border2)">Single</span>';
+    const isBundleRow=type==='B';
+    const catBg=isBundleRow?'background:rgba(13,148,136,.03)':'';
+    // Category group separator
+    let sepRow='';
+    if(s[4]!==lastCat){
+      lastCat=s[4];
+      sepRow=`<tr style="background:var(--bg4)"><td colspan="12" style="font-size:9.5px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;padding:5px 10px">${s[4]}</td></tr>`;
+    }
+    const revStr=erevM>=1?'$'+erevM.toFixed(2)+'M':'$'+(erevM*1000).toFixed(0)+'K';
+    return sepRow+`<tr style="${catBg}"><td style="font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--text3)">${s[0]}</td><td style="font-family:'JetBrains Mono',monospace;font-size:9.5px">${s[1]}</td><td style="color:var(--text);font-weight:500;max-width:200px">${s[2]}</td><td>${s[3]}</td><td>${s[4]}</td><td>${typeBadge}</td><td class="nr" style="font-weight:600">$${s[5].toFixed(2)}</td><td class="nr">${(s[6]*100).toFixed(1)}%</td><td class="nr">${fU(eu)}</td><td class="nr">${revStr}</td><td style="white-space:nowrap">${chBadges}</td><td>${tg}</td></tr>`;
+  }).join('');
+  // Totals row — annBrand already = BSF sum above
+  const totalUnits=Math.round(annBrand);
+  const totalRev=totalUnits*ASP; // use ASP consistently
+  tbody.innerHTML+=`<tr style="background:var(--bg4);font-weight:700;border-top:2px solid var(--border2)">
+    <td colspan="6" style="font-size:11px;color:var(--text);padding:8px 10px">📦 TOTAL — All 38 SKUs (${SKUS.filter(s=>s[8]==='S').length} Singles · ${SKUS.filter(s=>s[8]==='B').length} Bundles)</td>
+    <td class="nr" style="color:var(--text3);font-size:10px">Wtd Avg ASP: $${(totalRev/totalUnits).toFixed(2)}</td>
+    <td class="nr" style="color:var(--text)">100.0%</td>
+    <td class="nr" style="color:var(--text);font-size:12px">${fU(totalUnits)}</td>
+    <td class="nr" style="color:var(--brand);font-size:12px">$${(totalRev/1e6).toFixed(2)}M</td>
+    <td colspan="2"></td>
+  </tr>`;
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+renderPage('exec');
+</script>
+</body>
+</html>
